@@ -11,6 +11,19 @@
     "action": {
         "default_popup": "menu.html"
     },
-    "host_permissions": ["*://*/*"],
-    "permissions": []
+    "host_permissions": [
+        "*://*/*"
+    ],
+    "permissions": [],
+    "commands": {
+        "_execute_action": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+V",
+                "windows": "Ctrl+Shift+V",
+                "mac": "Command+Shift+V",
+                "chromeos": "Ctrl+Shift+V",
+                "linux": "Ctrl+Shift+V"
+            }
+        }
+    }
 }
