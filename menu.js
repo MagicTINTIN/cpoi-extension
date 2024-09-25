@@ -1,27 +1,41 @@
-// Create a unified API wrapper for compatibility
+function urlEncode(input) {
+    return input.split('').map(c => {
+        if (/[a-zA-Z0-9\-_.~?]/.test(c)) {
+            return c;
+        } else if (c === ' ') {
+            return '+';
+        } else {
+            return '%' + c.charCodeAt(0).toString(16).padStart(2, '0').toUpperCase();
+        }
+    }).join('');
+}
+
+function getCodeFromCPOI(mode, content, lang = 'en') {
+    if (content == '' || mode == '') return "Input not filled";
+    fetch(`https://cpoi.softplus.fr/?${lang}&${mode}=${urlEncode(content)}`)
+        .then(response => response.text())
+        .then(text => { return text.split("\n").join("").split(" ").join("") });
+}
+
+function getClipboardFromCPOI(code) {
+    if (code == '') return "Code not filled";
+    fetch(`https://cpoi.softplus.fr/?p=${code}`)
+        .then(response => response.text())
+        .then(text => { return text.slice(1) });
+}
 
 
-// browser.storage.sync.set({
-//     theme: "dark",
-// }, function () {
-//     console.log("Settings saved");
-// });
+function getEasyFromCPOI(content, lang = 'en') {
+    if (content == '') return "Input not filled";
+    fetch(`https://cpoi.softplus.fr/?${lang}&e=${urlEncode(content)}`)
+        .then(response => response.text())
+        .then(text => { return text.split("\n").join("").split(" ").join("") });
+}
 
-// thisBrowser.storage.sync.get(['theme'], function (result) {
-//     console.log(result);
-//     if (result === undefined) {
-//         console.log("NO PREVIOUS DATA");
-//         browser.storage.sync.set({
-//             theme: "dark",
-//         }, function () {
-//             console.log("Settings saved");
-//         });
-//     }
-// });
+document.getElementById("aButton").addEventListener("click", () => {document.getElementById("autoOutput").innerText = getEasyFromCPOI(document.getElementById("autoInput").innerText)});
+document.getElementById("cButton").addEventListener("click", () => {document.getElementById("codeInput").innerText = getCodeFromCPOI('c', document.getElementById("dataInput").innerText)});
+document.getElementById("pButton").addEventListener("click", () => {document.getElementById("dataInput").innerText = getClipboardFromCPOI(document.getElementById("codeInput").innerText)});
 
-// browser.storage.sync.get(['theme'], function (result) {
-//     console.log("Theme: " + result.theme);
-// });
 
 thisBrowser.storage.onChanged.addListener(function (changes, areaName) {
     for (let [key, { oldValue, newValue }] of Object.entries(changes)) {
