@@ -17,6 +17,12 @@
     "permissions": [
         "storage"
     ],
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "cpoi@example.org",
+            "strict_min_version": "88.0"
+        }
+    },
     "commands": {
         "_execute_action": {
             "suggested_key": {
