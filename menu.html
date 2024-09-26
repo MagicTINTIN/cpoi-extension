@@ -2,11 +2,12 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="./vars.css" />
-    <link rel="stylesheet" href="./menu.css" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./vars.css">
+    <link rel="stylesheet" href="./common.css">
+    <link rel="stylesheet" href="./menu.css">
 </head>
 
 <body>
@@ -17,19 +18,21 @@
     <h1>CPOI</h1>
     <main>
         <textarea id="autoInput" class="blue portal"></textarea>
-        <br>
-        <button class="transferButton" id="aButton">Copy/Paste ↓</button>
-        <br>
+        
+        <div class="btnCentering"><button class="ebtn" id="aButton">Copy/Paste ↓</button></div>
+        
         <textarea id="autoOutput" class="orange portal"></textarea>
         <hr>
         <textarea id="dataInput" class="blue portal"></textarea>
-        <br>
-        <button class="transferButton" id="cButton">Copy ↓</button><button class="transferButton" id="pButton">Paste
-            ↑</button>
-        <br>
+        
+        <div class="btnCentering">
+            <button class="tbtn cbtn" id="cButton">Copy ↓</button>
+            <button class="tbtn pbtn" id="pButton">Paste ↑</button>
+        </div>
+        
         <textarea id="codeInput" class="orange portal"></textarea>
-        <br>
-        <br>
+        
+        
         <button id="testBtn1">Set</button>
         <button id="testBtn2">Get</button>
     </main>

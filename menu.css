@@ -1,19 +1,4 @@
-html {
-    border-radius: 10%;
-}
 
-body {
-    width: 20rem;
-    border-radius: 10%;
-    background-color: var(--bg);
-    opacity: 0.8;
-    background: radial-gradient(circle, transparent 20%, var(--bg) 20%, var(--bg) 80%, transparent 80%, transparent), radial-gradient(circle, transparent 20%, var(--bg) 20%, var(--bg) 80%, transparent 80%, transparent) 10px 10px, linear-gradient(var(--bgv) 0.8px, transparent 0.8px) 0 -0.4px, linear-gradient(90deg, var(--bgv) 0.8px, var(--bg) 0.8px) -0.4px 0;
-    background-size: 20px 20px, 20px 20px, 10px 10px, 10px 10px;
-    color: var(--fg);
-    transition: all 0.2s;
-    font-family: 'Courier New', Courier, monospace;
-    font-size: large;
-}
 
 textarea,
 button {
@@ -22,23 +7,32 @@ button {
     font-size: .7em;
 }
 
-h1 {
+textarea {
+    resize: none;
+    height:  6em;
+    box-sizing: border-box;
+}
+
+
+button {
     font-weight: bold;
-    text-align: center;
 }
 
-main {
+.btnCentering {
     width: 100%;
-    transition: all 0.2s;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 0;
 }
-
 .portal {
     width: 80%;
     margin: auto;
-    border-radius: 20px;
+    border-radius: 25px;
+    padding: 8px;
     margin-left: 10%;
     margin-right: 10%;
-    border: solid 1px;
+    border: solid 2px;
     transition: all 0.2s;
     outline: none;
     box-sizing: border-box;
@@ -47,6 +41,7 @@ main {
 .portal:focus {
     border: solid 3px;
     outline: none;
+    border-radius: 15px;
 }
 
 .blue {
@@ -75,50 +70,62 @@ main {
     box-shadow: 0px 0px 20px inset var(--o), 0px 0px 20px var(--o);
 }
 
-
-/* #transfer {
-    width: 50%;
-    margin-top: 5px;
-    margin-bottom: 5px;
-    margin-left: 25%;
-    margin-right: 25%;
-    border-radius: 5px;
-    background-color: #333333;
-    color: white;
-    font-weight: bold;
-    border: solid white 2px;
-    transition: all 0.2s;
+.ebtn {
+    transition: all .2s;
+    box-shadow: 0px -2px 6px var(--b), 0px 2px 6px var(--o);
 }
 
-#transfer:hover {
-    box-shadow: 0px 0px 10px white;
-} */
+.cbtn {
+    transition: all .2s;
+    box-shadow: 0px 0px 8px var(--b);
+}
 
-.transferButton {
-    width: 100%;
+.pbtn {
+    transition: all .2s;
+    box-shadow: 0px 0px 8px var(--o);
+}
+
+.ebtn, .tbtn {
+    width: 40%;
     box-sizing: border-box;
     padding: 5px;
 
     border-radius: 5px;
-    border: solid 2px var(--gray);
+    border: solid 2px var(--fgv);
     background-color: var(--n);
 
-    transition: all .3s;
+    transition: all .5s;
+
+    margin: auto;
+    margin-top: .2em;
+    margin-bottom: .2em;
 }
 
-.transferButton {
-    font-weight: bold;
-    text-align: center;
-    color: var(--y);
-
-    margin-bottom: 3vh;
-}
-
-.transferButton:hover {
+.ebtn:hover {
+    border-color: var(--fg);
     background-color: black;
+    box-shadow: inset 0 0 5px var(--fg), 0px -2px 6px var(--b), 0px 2px 6px var(--o);
 }
 
-.transferButton:active {
-    border-color: var(--y);
-    box-shadow: 0 0 10px var(--y)
+.tbtn:hover {
+    border-color: var(--fg);
+    background-color: black;
+    box-shadow: inset 0 0 5px var(--fg);
+}
+
+.cbtn:hover {
+    border-color: var(--fg);
+    background-color: black;
+    box-shadow: inset 0 0 5px var(--fg), 0px 0px 8px var(--b);
+}
+
+.pbtn:hover {
+    border-color: var(--fg);
+    background-color: black;
+    box-shadow: inset 0 0 5px var(--fg), 0px 0px 8px var(--o);
+}
+
+.ebtn:active, .tbtn:active, .cbtn:active, .pbtn:active {
+    border-color: var(--fg);
+    box-shadow: 0 0 10px var(--fg);
 }
