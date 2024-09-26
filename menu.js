@@ -57,8 +57,6 @@ thisBrowser.storage.onChanged.addListener(function (changes, areaName) {
     }
 });
 
-document.getElementById("dataInput").focus();
-
 // document.getElementById("testBtn1").addEventListener("click", () => {
 //     let k = prompt("Key");
 //     let v = prompt("Value");
@@ -165,6 +163,7 @@ document.getElementById("settings").addEventListener("click", () => {
         saveInstance();
         inSettings = false;
         home();
+        autoFocus();
     } else {
         inSettings = true;
         document.getElementById("settingsSection").style.display = "block";
@@ -185,8 +184,15 @@ document.getElementById("saveSettings").addEventListener("click", () => {
     saveInstance();
     inSettings = false;
     home();
+    autoFocus();
 });
 
+function autoFocus() {
+    if (localSettings.mode == "easy")
+        document.getElementById("autoInput").focus();
+    else
+        document.getElementById("dataInput").focus();
+}
 
 function updateAll() {
     console.log(localSettings);
@@ -196,6 +202,7 @@ function updateAll() {
 function initUpdateAll() {
     updateAll();
     home();
+    autoFocus();
 }
 
 getAll(initUpdateAll);
