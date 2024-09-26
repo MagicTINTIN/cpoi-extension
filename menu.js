@@ -1,40 +1,55 @@
+let instance = "https://cpoi.softplus.fr/"
+
 function urlEncode(input) {
     return input.split('').map(c => {
         if (/[a-zA-Z0-9\-_.~?]/.test(c)) {
             return c;
-        } else if (c === ' ') {
-            return '+';
         } else {
-            return '%' + c.charCodeAt(0).toString(16).padStart(2, '0').toUpperCase();
+            return '%' + encodeURIComponent(c).slice(1).toUpperCase();
         }
     }).join('');
 }
 
-function getCodeFromCPOI(mode, content, lang = 'en') {
+function getCodeFromCPOI(ret, mode, content, lang = 'en') {
+    let retText;
     if (content == '' || mode == '') return "Input not filled";
-    fetch(`https://cpoi.softplus.fr/?${lang}&${mode}=${urlEncode(content)}`)
+    fetch(`${instance}?${lang}&${mode}=${urlEncode(content)}`)
         .then(response => response.text())
-        .then(text => { return text.split("\n").join("").split(" ").join("") });
+        .then(text => { 
+            retText = text.slice(1);
+            console.log(retText);
+            ret.innerHTML = retText;
+         });
 }
 
-function getClipboardFromCPOI(code) {
+function getClipboardFromCPOI(ret, code) {
+    let retText;
     if (code == '') return "Code not filled";
-    fetch(`https://cpoi.softplus.fr/?p=${code}`)
+    fetch(`${instance}?p=${code}`)
         .then(response => response.text())
-        .then(text => { return text.slice(1) });
+        .then(text => { 
+            retText = text.slice(1);
+            console.log(retText);
+            ret.innerHTML = retText;
+         });
 }
 
 
-function getEasyFromCPOI(content, lang = 'en') {
+function getEasyFromCPOI(ret, content, lang = 'en') {
+    let retText;
     if (content == '') return "Input not filled";
-    fetch(`https://cpoi.softplus.fr/?${lang}&e=${urlEncode(content)}`)
+    fetch(`${instance}?${lang}&e=${urlEncode(content)}`)
         .then(response => response.text())
-        .then(text => { return text.split("\n").join("").split(" ").join("") });
+        .then(text => {
+            retText = text.slice(1);
+            console.log(retText);
+            ret.innerHTML = retText;
+        });
 }
 
-document.getElementById("aButton").addEventListener("click", () => {document.getElementById("autoOutput").innerText = getEasyFromCPOI(document.getElementById("autoInput").innerText)});
-document.getElementById("cButton").addEventListener("click", () => {document.getElementById("codeInput").innerText = getCodeFromCPOI('c', document.getElementById("dataInput").innerText)});
-document.getElementById("pButton").addEventListener("click", () => {document.getElementById("dataInput").innerText = getClipboardFromCPOI(document.getElementById("codeInput").innerText)});
+document.getElementById("aButton").addEventListener("click", () => { getEasyFromCPOI(document.getElementById("autoOutput"), document.getElementById("autoInput").value) });
+document.getElementById("cButton").addEventListener("click", () => { getCodeFromCPOI(document.getElementById("codeInput"), 'c', document.getElementById("dataInput").value) });
+document.getElementById("pButton").addEventListener("click", () => { getClipboardFromCPOI(document.getElementById("dataInput"), document.getElementById("codeInput").value) });
 
 
 thisBrowser.storage.onChanged.addListener(function (changes, areaName) {
