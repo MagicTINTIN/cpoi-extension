@@ -6,31 +6,37 @@ if (typeof browser === "undefined") {
     var firefox = true;
 }
 
+let localSettings;
+
 /**
  * Get values for key or list of keys
  * @param key 
- * @returns Object {keys:values}
+ * @param callback that will take one arg
  */
-function get(key) {
+function get(key, callback) {
     if (typeof key == "object") {
         if (firefox)
             thisBrowser.storage.sync.get(key).then((values) => {
-                console.log("VALUE: ", values);
+                // console.log("VALUE: ", values);
+                callback(values);
             }, (reason) => { console.error("ERROR WHILE GETTING SETTINGS", reason); });
         else
             thisBrowser.storage.sync.get(key, (values) => {
-                console.log("VALUE: ", values);
+                // console.log("VALUE: ", values);
+                callback(values);
             });
         return [];
     }
     else if (typeof key == "string") {
         if (firefox)
             thisBrowser.storage.sync.get([`${key}`]).then((value) => {
-                console.log("VALUE: ", value);
+                //console.log("VALUE: ", value);
+                callback(value);
             }, (reason) => { console.error("ERROR WHILE GETTING SETTINGS", reason); });
         else
             thisBrowser.storage.sync.get([`${key}`], (value) => {
-                console.log("VALUE: ", value);
+                //console.log("VALUE: ", value);
+                callback(value);
             });
         return "";
     }
@@ -54,4 +60,16 @@ function set(kvObject) {
     }
     else
         return console.log("The following type is not settable:", key);
+}
+
+function getAll(callback) {
+    get(["theme", "lang", "mode", "instance"], (values) => {
+        if (!values["theme"]) values.theme = "darker";
+        if (!values["lang"]) values.lang = "en";
+        if (!values["mode"]) values.mode = "easy";
+        if (!values["instance"]) values.instance = "https://cpoi.softplus.fr/";
+        localSettings = values;
+        callback();
+    });
+
 }

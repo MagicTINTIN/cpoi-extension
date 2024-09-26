@@ -75,6 +75,10 @@ h1, h4 {
     -ms-user-select: none;
 }
 
+h1 {
+    text-shadow: 0px 0px 5px var(--fg);
+}
+
 main {
     width: 100%;
     transition: all 0.2s;

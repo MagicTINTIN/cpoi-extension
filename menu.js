@@ -1,5 +1,3 @@
-let instance = "https://cpoi.softplus.fr/"
-
 function urlEncode(input) {
     return input.split('').map(c => {
         if (/[a-zA-Z0-9\-_.~?]/.test(c)) {
@@ -18,7 +16,7 @@ function updateAndClipboardCopy(obj, value) {
 
 function getCodeFromCPOI(ret, mode, content, lang = 'en') {
     if (content == '' || mode == '') return "Input not filled";
-    fetch(`${instance}?${lang}&${mode}=${urlEncode(content)}`)
+    fetch(`${localSettings.instance}?${lang}&${mode}=${urlEncode(content)}`)
         .then(response => response.text())
         .then(text => {
             updateAndClipboardCopy(ret, text.slice(1));
@@ -27,7 +25,7 @@ function getCodeFromCPOI(ret, mode, content, lang = 'en') {
 
 function getClipboardFromCPOI(ret, code) {
     if (code == '') return "Code not filled";
-    fetch(`${instance}?p=${code}`)
+    fetch(`${localSettings.instance}?p=${code}`)
         .then(response => response.text())
         .then(text => {
             updateAndClipboardCopy(ret, text.slice(1));
@@ -37,7 +35,7 @@ function getClipboardFromCPOI(ret, code) {
 
 function getEasyFromCPOI(ret, content, lang = 'en') {
     if (content == '') return "Input not filled";
-    fetch(`${instance}?${lang}&e=${urlEncode(content)}`)
+    fetch(`${localSettings.instance}?${lang}&e=${urlEncode(content)}`)
         .then(response => response.text())
         .then(text => {
             updateAndClipboardCopy(ret, text.slice(1));
@@ -101,6 +99,28 @@ function home() {
     document.getElementById("advancedSection").style.display = "none";
 }
 
+
+document.getElementById("lang").addEventListener("click", switchLanguage)
+function switchLanguage() {
+    let kv = {};
+    kv["lang"] = localSettings.lang == "fr" ? "en" : "fr";
+    set(kv)
+    getAll(updateAll);
+}
+
+function updtLang() {
+    document.getElementById("lang").innerHTML = localSettings.lang == "fr" ? "FR" : "EN";
+    document.getElementById("cButton").innerHTML = localSettings.lang == "fr" ? "Copier" : "Copy";
+    document.getElementById("pButton").innerHTML = localSettings.lang == "fr" ? "Coller" : "Paste";
+    document.getElementById("aButton").innerHTML = localSettings.lang == "fr" ? "Copier/Coller" : "Copy/Paste";
+    document.getElementById("settingsH4").innerHTML = localSettings.lang == "fr" ? "Paramètres" : "Settings";
+    document.getElementById("cancelSettings").innerHTML = localSettings.lang == "fr" ? "Annuler" : "Cancel";
+    document.getElementById("saveSettings").innerHTML = localSettings.lang == "fr" ? "Enregistrer" : "Save";
+    document.getElementById("autoInput").placeholder = localSettings.lang == "fr" ? "Entrez votre texte à copier ou votre code ici" : "Enter your text to copy or your code here";
+    document.getElementById("dataInput").placeholder = localSettings.lang == "fr" ? "Entrez votre texte à copier ici" : "Enter your text to copy here";
+    document.getElementById("codeInput").placeholder = localSettings.lang == "fr" ? "Entrez votre code de presse papier ici" : "Enter your clipboard code here";
+}
+
 home();
 
 document.getElementById("settings").addEventListener("click", () => {
@@ -116,3 +136,11 @@ document.getElementById("cancelSettings").addEventListener("click", () => {
 document.getElementById("saveSettings").addEventListener("click", () => {
     home();
 });
+
+
+function updateAll() {
+    console.log(localSettings);
+    updtLang();
+}
+
+getAll(updateAll);
