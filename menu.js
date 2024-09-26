@@ -10,40 +10,37 @@ function urlEncode(input) {
     }).join('');
 }
 
+function updateAndClipboardCopy(obj, value) {
+    console.log(value);
+    obj.innerHTML = value;
+    navigator.clipboard.writeText(value);
+}
+
 function getCodeFromCPOI(ret, mode, content, lang = 'en') {
-    let retText;
     if (content == '' || mode == '') return "Input not filled";
     fetch(`${instance}?${lang}&${mode}=${urlEncode(content)}`)
         .then(response => response.text())
-        .then(text => { 
-            retText = text.slice(1);
-            console.log(retText);
-            ret.innerHTML = retText;
-         });
+        .then(text => {
+            updateAndClipboardCopy(ret, text.slice(1));
+        });
 }
 
 function getClipboardFromCPOI(ret, code) {
-    let retText;
     if (code == '') return "Code not filled";
     fetch(`${instance}?p=${code}`)
         .then(response => response.text())
-        .then(text => { 
-            retText = text.slice(1);
-            console.log(retText);
-            ret.innerHTML = retText;
-         });
+        .then(text => {
+            updateAndClipboardCopy(ret, text.slice(1));
+        });
 }
 
 
 function getEasyFromCPOI(ret, content, lang = 'en') {
-    let retText;
     if (content == '') return "Input not filled";
     fetch(`${instance}?${lang}&e=${urlEncode(content)}`)
         .then(response => response.text())
         .then(text => {
-            retText = text.slice(1);
-            console.log(retText);
-            ret.innerHTML = retText;
+            updateAndClipboardCopy(ret, text.slice(1));
         });
 }
 
