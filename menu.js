@@ -44,7 +44,11 @@ function getEasyFromCPOI(ret, content, lang = 'en') {
         });
 }
 
-document.getElementById("aButton").addEventListener("click", () => { getEasyFromCPOI(document.getElementById("autoOutput"), document.getElementById("autoInput").value) });
+document.getElementById("aButton").addEventListener("click", () => {
+    getEasyFromCPOI(document.getElementById("autoOutput"), document.getElementById("autoInput").value);
+    if (content == '') return;
+    document.getElementById("autoOutput").style.transform = "scale(1)";
+});
 document.getElementById("cButton").addEventListener("click", () => { getCodeFromCPOI(document.getElementById("codeInput"), 'c', document.getElementById("dataInput").value) });
 document.getElementById("pButton").addEventListener("click", () => { getClipboardFromCPOI(document.getElementById("dataInput"), document.getElementById("codeInput").value) });
 
@@ -56,34 +60,59 @@ thisBrowser.storage.onChanged.addListener(function (changes, areaName) {
 });
 
 document.getElementById("dataInput").focus();
-document.getElementById("testBtn1").addEventListener("click", () => {
-    let k = prompt("Key");
-    let v = prompt("Value");
-    let kv = {}
-    kv[k] = v
-    set(kv);
-    get(k)
-    // let newValue;
-    // thisBrowser.storage.sync.get(['theme'], function (result) {
-    //     newValue = prompt("Theme: ", result.theme);
-    //     thisBrowser.storage.sync.set({
-    //         theme: newValue,
-    //     }, function () {
-    //         console.log("Settings saved");
-    //     });
-    // });
+
+// document.getElementById("testBtn1").addEventListener("click", () => {
+//     let k = prompt("Key");
+//     let v = prompt("Value");
+//     let kv = {}
+//     kv[k] = v
+//     set(kv);
+//     get(k)
+//     // let newValue;
+//     // thisBrowser.storage.sync.get(['theme'], function (result) {
+//     //     newValue = prompt("Theme: ", result.theme);
+//     //     thisBrowser.storage.sync.set({
+//     //         theme: newValue,
+//     //     }, function () {
+//     //         console.log("Settings saved");
+//     //     });
+//     // });
+// });
+
+// document.getElementById("testBtn2").addEventListener("click", () => {
+//     let newValue = prompt("Key");
+//     get(`${newValue}`);
+//     // let newValue;
+//     // thisBrowser.storage.sync.get(['theme'], function (result) {
+//     //     newValue = prompt("Theme: ", result.theme);
+//     //     thisBrowser.storage.sync.set({
+//     //         theme: newValue,
+//     //     }, function () {
+//     //         console.log("Settings saved");
+//     //     });
+//     // });
+// });
+
+document.getElementById("autoOutput").style.transform = "scale(0)";
+
+function home() {
+    document.getElementById("easySection").style.display = "block";
+    document.getElementById("settingsSection").style.display = "none";
+    document.getElementById("advancedSection").style.display = "none";
+}
+
+home();
+
+document.getElementById("settings").addEventListener("click", () => {
+    document.getElementById("settingsSection").style.display = "block";
+    document.getElementById("easySection").style.display = "none";
+    document.getElementById("advancedSection").style.display = "none";
 });
 
-document.getElementById("testBtn2").addEventListener("click", () => {
-    let newValue = prompt("Key");
-    get(`${newValue}`);
-    // let newValue;
-    // thisBrowser.storage.sync.get(['theme'], function (result) {
-    //     newValue = prompt("Theme: ", result.theme);
-    //     thisBrowser.storage.sync.set({
-    //         theme: newValue,
-    //     }, function () {
-    //         console.log("Settings saved");
-    //     });
-    // });
+document.getElementById("cancelSettings").addEventListener("click", () => {
+    home();
+});
+
+document.getElementById("saveSettings").addEventListener("click", () => {
+    home();
 });

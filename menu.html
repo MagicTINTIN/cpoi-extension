@@ -12,29 +12,38 @@
 
 <body>
     <nav>
-        <span class="languageButton spanButton" id="settings">EN</span>
+        <span class="languageButton spanButton" id="lang">EN</span>
         <span class="settingsButton spanButton" id="settings">⚙</span>
     </nav>
     <h1>CPOI</h1>
     <main>
-        <textarea id="autoInput" class="blue portal"></textarea>
-        
-        <div class="btnCentering"><button class="ebtn" id="aButton">Copy/Paste ↓</button></div>
-        
-        <textarea id="autoOutput" class="orange portal"></textarea>
-        <hr>
-        <textarea id="dataInput" class="blue portal"></textarea>
-        
-        <div class="btnCentering">
-            <button class="tbtn cbtn" id="cButton">Copy ↓</button>
-            <button class="tbtn pbtn" id="pButton">Paste ↑</button>
-        </div>
-        
-        <textarea id="codeInput" class="orange portal"></textarea>
-        
-        
-        <button id="testBtn1">Set</button>
-        <button id="testBtn2">Get</button>
+        <section id="easySection">
+            <textarea id="autoInput" class="blue portal"></textarea>
+
+            <div class="btnCentering"><button class="ebtn" id="aButton">Copy/Paste ↓</button></div>
+
+            <textarea id="autoOutput" class="orange portal"></textarea>
+        </section>
+        <section id="advancedSection">
+            <textarea id="dataInput" class="blue portal"></textarea>
+
+            <div class="btnCentering">
+                <button class="tbtn cbtn" id="cButton">Copy ↓</button>
+                <button class="tbtn pbtn" id="pButton">Paste ↑</button>
+            </div>
+
+            <textarea id="codeInput" class="orange portal"></textarea>
+        </section>
+        <section id="settingsSection">
+            <h4>Settings</h4>
+            <div class="btnCentering">
+                <button class="tbtn cbtn" id="cancelSettings">Cancel</button>
+                <button class="tbtn pbtn" id="saveSettings">Save</button>
+            </div>
+        </section>
+        <!-- <button id="testBtn1">Set</button>
+        <button id="testBtn2">Get</button> -->
+        <a href="https://cpoi.softplus.fr" class="bottomLink">cpoi.softplus.fr</a>
     </main>
 
     <script src="./memory.js"></script>

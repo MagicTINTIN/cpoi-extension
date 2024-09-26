@@ -21,12 +21,14 @@ body {
     -webkit-user-select: none;
     -ms-user-select: none;
 
-    height: 80vh;
+    height: 70vh;
+    margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
 nav {
+    padding: 8px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -60,7 +62,7 @@ nav span {
     transform: scale(0.9);
 }
 
-h1 {
+h1, h4 {
     margin-top: 0;
     font-weight: bold;
     text-align: center;
@@ -79,8 +81,38 @@ main {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: 80vh;
+    height: 70vh;
     box-sizing: border-box;
+}
+
+section {
+    width: 100%;
+    height: 100%;
+}
+
+.bottomLink {
+    font-size: x-small;
+    color: var(--fgv);
+    width: 100%;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.2s;
+    box-sizing: border-box;
+    margin: 8px;
+}
+
+.bottomLink:visited {
+    color: var(--fgv);
+}
+
+.bottomLink:hover {
+    color: var(--fg);
+    text-decoration: underline;
+}
+
+.bottomLink:active {
+    color: var(--fgv);
+    text-decoration: underline;
 }
 
 /* ----------- SCROLLBAR ----------- */
@@ -106,7 +138,7 @@ main {
     border: 1px solid transparent;
     background-clip: content-box;
     background-color: var(--fgv);
-    transition: all 1s;
+    transition: all 0.2s;
 }
 
 ::-webkit-scrollbar-thumb:hover {
