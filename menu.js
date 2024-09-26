@@ -114,26 +114,36 @@ function updtLang() {
     document.getElementById("pButton").innerHTML = localSettings.lang == "fr" ? "Coller" : "Paste";
     document.getElementById("aButton").innerHTML = localSettings.lang == "fr" ? "Copier/Coller" : "Copy/Paste";
     document.getElementById("settingsH4").innerHTML = localSettings.lang == "fr" ? "Paramètres" : "Settings";
-    document.getElementById("cancelSettings").innerHTML = localSettings.lang == "fr" ? "Annuler" : "Cancel";
+    // document.getElementById("cancelSettings").innerHTML = localSettings.lang == "fr" ? "Annuler" : "Cancel";
     document.getElementById("saveSettings").innerHTML = localSettings.lang == "fr" ? "Enregistrer" : "Save";
     document.getElementById("autoInput").placeholder = localSettings.lang == "fr" ? "Entrez votre texte à copier ou votre code ici" : "Enter your text to copy or your code here";
     document.getElementById("dataInput").placeholder = localSettings.lang == "fr" ? "Entrez votre texte à copier ici" : "Enter your text to copy here";
     document.getElementById("codeInput").placeholder = localSettings.lang == "fr" ? "Entrez votre code de presse papier ici" : "Enter your clipboard code here";
 }
 
-home();
-
+let inSettings = false;
 document.getElementById("settings").addEventListener("click", () => {
-    document.getElementById("settingsSection").style.display = "block";
-    document.getElementById("easySection").style.display = "none";
-    document.getElementById("advancedSection").style.display = "none";
+    if (inSettings) {
+        inSettings = false;
+        home();
+    } else {
+        inSettings = true;
+        document.getElementById("settingsSection").style.display = "block";
+        document.getElementById("easySection").style.display = "none";
+        document.getElementById("advancedSection").style.display = "none";
+    }
 });
 
-document.getElementById("cancelSettings").addEventListener("click", () => {
-    home();
-});
+// document.getElementById("cancelSettings").addEventListener("click", () => {
+//     home();
+// });
+
+// document.getElementById("saveSettings").addEventListener("click", () => {
+//     home();
+// });
 
 document.getElementById("saveSettings").addEventListener("click", () => {
+    inSettings = false;
     home();
 });
 
@@ -143,4 +153,9 @@ function updateAll() {
     updtLang();
 }
 
-getAll(updateAll);
+function initUpdateAll() {
+    updateAll();
+    home();
+}
+
+getAll(initUpdateAll);
