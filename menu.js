@@ -89,6 +89,63 @@ thisBrowser.storage.onChanged.addListener(function (changes, areaName) {
 //     // });
 // });
 
+function updtTheme() {
+    if (localSettings.theme == "dark") {
+        // document.documentElement.style.setProperty('--blackest', '#07020D');
+        document.documentElement.style.setProperty('--r', '#FE3420');
+        document.documentElement.style.setProperty('--rv', '#FF7769');
+        document.documentElement.style.setProperty('--re', '#FE3420');
+        document.documentElement.style.setProperty('--g', '#CEFE20');
+        document.documentElement.style.setProperty('--gv', '#DCFF69');
+        document.documentElement.style.setProperty('--b', '#207DFE');
+        document.documentElement.style.setProperty('--bt', '#121415');
+        document.documentElement.style.setProperty('--bv', '#4572B1');
+        document.documentElement.style.setProperty('--be', '#4572B1');
+        document.documentElement.style.setProperty('--o', '#FE8020');
+        document.documentElement.style.setProperty('--ot', '#151412');
+        document.documentElement.style.setProperty('--ov', '#FFA969');
+        document.documentElement.style.setProperty('--y', '#FEC220');
+        document.documentElement.style.setProperty('--yv', '#FFD469');
+        document.documentElement.style.setProperty('--n', '#1B1B1E');
+        document.documentElement.style.setProperty('--nno', '#1B1B1E00');
+        document.documentElement.style.setProperty('--nho', '#1B1B1E99');
+        document.documentElement.style.setProperty('--w', '#FBFFFE');
+        document.documentElement.style.setProperty('--nv', '#444146');
+        document.documentElement.style.setProperty('--wv', '#B4B3B6');
+        document.documentElement.style.setProperty('--gray', '#6D676E');
+        document.documentElement.style.setProperty('--bgv', '#333333');
+        document.documentElement.style.setProperty('--bg', '#000000');
+        document.documentElement.style.setProperty('--fg', '#ffffff');
+        document.documentElement.style.setProperty('--fgv', '#cccccc');
+    } else {
+        document.documentElement.style.setProperty('--r', '#FE3420');
+        document.documentElement.style.setProperty('--rv', '#FF7769');
+        document.documentElement.style.setProperty('--re', '#FE3420');
+        document.documentElement.style.setProperty('--g', '#CEFE20');
+        document.documentElement.style.setProperty('--gv', '#DCFF69');
+        document.documentElement.style.setProperty('--b', '#207DFE');
+        document.documentElement.style.setProperty('--bt', '#E1ECFF');
+        document.documentElement.style.setProperty('--bv', '#4572B1');
+        document.documentElement.style.setProperty('--be', '#4572B1');
+        document.documentElement.style.setProperty('--o', '#FE8020');
+        document.documentElement.style.setProperty('--ot', '#FFEDE1');
+        document.documentElement.style.setProperty('--ov', '#FFA969');
+        document.documentElement.style.setProperty('--y', '#FEC220');
+        document.documentElement.style.setProperty('--yv', '#FFD469');
+        document.documentElement.style.setProperty('--n', '#d4d4d4');
+        document.documentElement.style.setProperty('--nno', '#1B1B1E00');
+        document.documentElement.style.setProperty('--nho', '#1B1B1E99');
+        document.documentElement.style.setProperty('--w', '#FBFFFE');
+        document.documentElement.style.setProperty('--nv', '#444146');
+        document.documentElement.style.setProperty('--wv', '#B4B3B6');
+        document.documentElement.style.setProperty('--gray', '#6D676E');
+        document.documentElement.style.setProperty('--fgv', '#333333');
+        document.documentElement.style.setProperty('--fg', '#000000');
+        document.documentElement.style.setProperty('--bg', '#ffffff');
+        document.documentElement.style.setProperty('--bgv', '#eeeeee');
+    }
+}
+
 document.getElementById("autoOutput").style.transform = "scale(0)";
 
 function home() {
@@ -197,6 +254,7 @@ function autoFocus() {
 function updateAll() {
     console.log(localSettings);
     updtLang();
+    updtTheme();
 }
 
 function initUpdateAll() {
