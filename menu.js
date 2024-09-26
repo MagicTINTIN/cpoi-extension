@@ -44,7 +44,7 @@ function getEasyFromCPOI(ret, content, lang = 'en') {
 
 document.getElementById("aButton").addEventListener("click", () => {
     getEasyFromCPOI(document.getElementById("autoOutput"), document.getElementById("autoInput").value);
-    if (content == '') return;
+    if (document.getElementById("autoInput").value == '') return;
     document.getElementById("autoOutput").style.transform = "scale(1)";
 });
 document.getElementById("cButton").addEventListener("click", () => { getCodeFromCPOI(document.getElementById("codeInput"), 'c', document.getElementById("dataInput").value) });
