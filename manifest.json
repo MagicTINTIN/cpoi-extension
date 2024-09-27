@@ -9,7 +9,7 @@
         "128": "images/icon128.png"
     },
     "action": {
-        "default_popup": "menu.html"
+        "default_popup": "src/menu.html"
     },
     "host_permissions": [
         "*://*/*"
