@@ -9,7 +9,7 @@ button {
 
 textarea {
     resize: none;
-    height: 20vh;
+    height: 10em;
     box-sizing: border-box;
     text-align: center;
     vertical-align: middle

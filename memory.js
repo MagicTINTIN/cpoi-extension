@@ -64,7 +64,7 @@ function set(kvObject) {
 
 function getAll(callback) {
     get(["theme", "lang", "mode", "instance"], (values) => {
-        if (!values["theme"]) values.theme = "darker";
+        if (!values["theme"]) values.theme = "dark";
         if (!values["lang"]) values.lang = "en";
         if (!values["mode"]) values.mode = "easy";
         if (!values["instance"]) values.instance = "https://cpoi.softplus.fr/";
