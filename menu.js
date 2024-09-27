@@ -10,8 +10,6 @@ function urlEncode(input) {
 
 function updateAndClipboardCopy(obj, value) {
     console.log(value);
-    // obj.value = undefined);
-    // obj.innerHTML = value;
     obj.value = value;
     navigator.clipboard.writeText(value);
 }
@@ -59,41 +57,8 @@ thisBrowser.storage.onChanged.addListener(function (changes, areaName) {
     }
 });
 
-// document.getElementById("testBtn1").addEventListener("click", () => {
-//     let k = prompt("Key");
-//     let v = prompt("Value");
-//     let kv = {}
-//     kv[k] = v
-//     set(kv);
-//     get(k)
-//     // let newValue;
-//     // thisBrowser.storage.sync.get(['theme'], function (result) {
-//     //     newValue = prompt("Theme: ", result.theme);
-//     //     thisBrowser.storage.sync.set({
-//     //         theme: newValue,
-//     //     }, function () {
-//     //         console.log("Settings saved");
-//     //     });
-//     // });
-// });
-
-// document.getElementById("testBtn2").addEventListener("click", () => {
-//     let newValue = prompt("Key");
-//     get(`${newValue}`);
-//     // let newValue;
-//     // thisBrowser.storage.sync.get(['theme'], function (result) {
-//     //     newValue = prompt("Theme: ", result.theme);
-//     //     thisBrowser.storage.sync.set({
-//     //         theme: newValue,
-//     //     }, function () {
-//     //         console.log("Settings saved");
-//     //     });
-//     // });
-// });
-
 function updtTheme() {
     if (localSettings.theme == "dark") {
-        // document.documentElement.style.setProperty('--blackest', '#07020D');
         document.documentElement.style.setProperty('--r', '#FE3420');
         document.documentElement.style.setProperty('--rv', '#FF7769');
         document.documentElement.style.setProperty('--re', '#FE3420');
@@ -204,9 +169,6 @@ function updtLang() {
 
     document.getElementById("saveSettings").innerHTML = localSettings.lang == "fr" ? "Enregistrer" : "Save";
 
-    // document.getElementById("cancelSettings").innerHTML = localSettings.lang == "fr" ? "Annuler" : "Cancel";
-    document.getElementById("saveSettings").innerHTML = localSettings.lang == "fr" ? "Enregistrer" : "Save";
-
     // inputs/outputs
     document.getElementById("autoInput").placeholder = localSettings.lang == "fr" ? "Entrez votre texte à copier ou votre code ici" : "Enter your text to copy or your code here";
     document.getElementById("dataInput").placeholder = localSettings.lang == "fr" ? "Entrez votre texte à copier ici" : "Enter your text to copy here";
@@ -230,14 +192,6 @@ document.getElementById("settings").addEventListener("click", () => {
         document.getElementById("advancedSection").style.display = "none";
     }
 });
-
-// document.getElementById("cancelSettings").addEventListener("click", () => {
-//     home();
-// });
-
-// document.getElementById("saveSettings").addEventListener("click", () => {
-//     home();
-// });
 
 document.getElementById("saveSettings").addEventListener("click", () => {
     saveInstance();
@@ -274,15 +228,15 @@ var ctrlPressed = false;
 autoInput.addEventListener("keydown", function (e) {
     console.log(e.code);
     
-    if (e.key === "Enter") {  //checks whether the pressed key is "Enter"
+    if (e.key === "Enter") {
         if (ctrlPressed)
             document.getElementById("aButton").click();
-    } else if (e.key === "Control") {  //checks whether the pressed key is "Enter"
+    } else if (e.key === "Control") {
         ctrlPressed = true;
     }
 });
 autoInput.addEventListener("keyup", function (e) {
-    if (e.key === "Control") {  //checks whether the pressed key is "Enter"
+    if (e.key === "Control") {
         ctrlPressed = false;
     }
 });
