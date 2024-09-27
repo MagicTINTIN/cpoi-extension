@@ -37,6 +37,7 @@ function getClipboardFromCPOI(ret, code) {
 
 function getEasyFromCPOI(ret, content, lang = 'en') {
     if (content == '') return "Input not filled";
+    // console.log(`${localSettings.instance}?${lang}&e=${urlEncode(content)}`);
     fetch(`${localSettings.instance}?${lang}&e=${urlEncode(content)}`)
         .then(response => response.text())
         .then(text => {
@@ -60,6 +61,7 @@ function home() {
     document.getElementById("easySection").style.display = localSettings.mode == "easy" ? "block" : "none";
     document.getElementById("settingsSection").style.display = "none";
     document.getElementById("advancedSection").style.display = localSettings.mode == "easy" ? "none" : "block";
+    document.getElementById("qrCodeSection").style.display = "none";
 }
 
 // SUBMENUS
@@ -76,6 +78,7 @@ document.getElementById("settings").addEventListener("click", () => {
         document.getElementById("settingsSection").style.display = "block";
         document.getElementById("easySection").style.display = "none";
         document.getElementById("advancedSection").style.display = "none";
+        document.getElementById("qrCodeSection").style.display = "none";
     }
 });
 
