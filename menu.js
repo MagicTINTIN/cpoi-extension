@@ -10,7 +10,9 @@ function urlEncode(input) {
 
 function updateAndClipboardCopy(obj, value) {
     console.log(value);
-    obj.innerHTML = value;
+    // obj.value = undefined);
+    // obj.innerHTML = value;
+    obj.value = value;
     navigator.clipboard.writeText(value);
 }
 
@@ -264,3 +266,55 @@ function initUpdateAll() {
 }
 
 getAll(initUpdateAll);
+
+var autoInput = document.getElementById("autoInput");
+var dataInput = document.getElementById("dataInput");
+var codeInput = document.getElementById("codeInput");
+var ctrlPressed = false;
+autoInput.addEventListener("keydown", function (e) {
+    console.log(e.code);
+    
+    if (e.key === "Enter") {  //checks whether the pressed key is "Enter"
+        if (ctrlPressed)
+            document.getElementById("aButton").click();
+    } else if (e.key === "Control") {  //checks whether the pressed key is "Enter"
+        ctrlPressed = true;
+    }
+});
+autoInput.addEventListener("keyup", function (e) {
+    if (e.key === "Control") {  //checks whether the pressed key is "Enter"
+        ctrlPressed = false;
+    }
+});
+
+dataInput.addEventListener("keydown", function (e) {
+    console.log(e.code);
+    
+    if (e.key === "Enter") {
+        if (ctrlPressed)
+            document.getElementById("cButton").click();
+    } else if (e.key === "Control") {
+        ctrlPressed = true;
+    }
+});
+dataInput.addEventListener("keyup", function (e) {
+    if (e.key === "Control") {
+        ctrlPressed = false;
+    }
+});
+
+codeInput.addEventListener("keydown", function (e) {
+    console.log(e.code);
+    
+    if (e.key === "Enter") {
+        if (ctrlPressed)
+            document.getElementById("pButton").click();
+    } else if (e.key === "Control") {
+        ctrlPressed = true;
+    }
+});
+codeInput.addEventListener("keyup", function (e) {
+    if (e.key === "Control") {
+        ctrlPressed = false;
+    }
+});
