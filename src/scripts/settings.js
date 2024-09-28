@@ -73,8 +73,27 @@ function updtLang() {
 
     // settings
     document.getElementById("settingsH4").innerHTML = localSettings.lang == "fr" ? "Paramètres" : "Settings";
+    document.getElementById("themeTitle").innerHTML = localSettings.lang == "fr" ? "Thème" : "Theme";
+    document.getElementById("deleteTitle").innerHTML = localSettings.lang == "fr" ? "Supprimer après" : "Delete after";
     document.getElementById("settingTheme").innerHTML = localSettings.lang == "fr" ? (localSettings.theme == "dark" ? "Sombre" : "Clair") : (localSettings.theme == "dark" ? "Dark" : "Light");
-    document.getElementById("settingMode").innerHTML = localSettings.lang == "fr" ? (localSettings.mode == "easy" ? "Simplifié" : "Classique") : (localSettings.mode == "easy" ? "Simplified" : "Classic");
+
+    // mode
+    if (localSettings.mode == "classic")
+        document.getElementById("settingMode").innerHTML = localSettings.lang == "fr" ? "Classique" : "Classic";
+    else if (localSettings.mode == "advanced")
+        document.getElementById("settingMode").innerHTML = localSettings.lang == "fr" ? "Avancé" : "Advanced";
+    else
+        document.getElementById("settingMode").innerHTML = localSettings.lang == "fr" ? "Simplifié" : "Simplified";
+
+    // type
+    if (localSettings.type == "u")
+        document.getElementById("settingTimeDelete").innerHTML = (localSettings.lang == "fr" ? "Collage" : "Pasting") + "<br><span class='verysmall'>(30min max)</span>";
+    else if (localSettings.type == "s")
+        document.getElementById("settingTimeDelete").innerHTML = "5min";
+    else if (localSettings.type == "l")
+        document.getElementById("settingTimeDelete").innerHTML = "12h";
+    else
+        document.getElementById("settingTimeDelete").innerHTML = "30min";
 
     document.getElementById("saveSettings").innerHTML = localSettings.lang == "fr" ? "Enregistrer" : "Save";
 
@@ -106,7 +125,32 @@ function switchTheme() {
 document.getElementById("settingMode").addEventListener("click", switchMode)
 function switchMode() {
     let kv = {};
-    kv["mode"] = localSettings.mode == "easy" ? "classic" : "easy";
+    if (localSettings.mode == "easy") {
+        kv["mode"] = "classic";
+    } else if (localSettings.mode == "classic") {
+        kv["mode"] = "advanced";
+    } else {
+        kv["mode"] = "easy";
+    }
+
+    set(kv)
+    getAll(updateAll);
+}
+
+document.getElementById("settingTimeDelete").addEventListener("click", switchTimeDelete)
+function switchTimeDelete() {
+    console.log("ntm");
+    let kv = {};
+    if (localSettings.type == "n") {
+        kv["type"] = "u";
+    } else if (localSettings.type == "u") {
+        kv["type"] = "s";
+    } else if (localSettings.type == "s") {
+        kv["type"] = "l";
+    } else {
+        kv["type"] = "n";
+    }
+
     set(kv)
     getAll(updateAll);
 }

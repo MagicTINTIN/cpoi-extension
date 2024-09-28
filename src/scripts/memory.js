@@ -50,6 +50,7 @@ function get(key, callback) {
  * @returns nothing
  */
 function set(kvObject) {
+    console.log(kvObject);
     if (typeof kvObject == "object") {
         if (firefox)
             browser.storage.sync.set(kvObject).then(() => {
@@ -63,10 +64,11 @@ function set(kvObject) {
 }
 
 function getAll(callback) {
-    get(["theme", "lang", "mode", "instance"], (values) => {
+    get(["theme", "lang", "mode", "instance", "type"], (values) => {
         if (!values["theme"]) values.theme = "dark";
         if (!values["lang"]) values.lang = "en";
         if (!values["mode"]) values.mode = "easy";
+        if (!values["type"]) values.type = "n";
         if (!values["instance"]) values.instance = "https://cpoi.softplus.fr/";
         localSettings = values;
         callback();

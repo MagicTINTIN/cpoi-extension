@@ -79,7 +79,7 @@ document.getElementById("pButton").addEventListener("click", () => { getClipboar
 function home() {
     document.getElementById("easySection").style.display = localSettings.mode == "easy" ? "block" : "none";
     document.getElementById("settingsSection").style.display = "none";
-    document.getElementById("advancedSection").style.display = localSettings.mode == "easy" ? "none" : "block";
+    document.getElementById("classicSection").style.display = localSettings.mode == "easy" ? "none" : "block";
     document.getElementById("qrCodeSection").style.display = "none";
 }
 
@@ -88,17 +88,19 @@ function home() {
 let inSettings = false;
 document.getElementById("settings").addEventListener("click", () => {
     if (inSettings) {
+        document.getElementById("settings").innerHTML = "⚙";
         saveInstance();
         inSettings = false;
         home();
         autoFocus();
     } else {
+        document.getElementById("settings").innerHTML = "⨯";
         document.getElementById("qrIcon").src = "../images/qrcode.svg";
         inSettings = true;
         inQrcode = false;
         document.getElementById("settingsSection").style.display = "block";
         document.getElementById("easySection").style.display = "none";
-        document.getElementById("advancedSection").style.display = "none";
+        document.getElementById("classicSection").style.display = "none";
         document.getElementById("qrCodeSection").style.display = "none";
     }
 });
@@ -110,12 +112,13 @@ document.getElementById("qrGenButton").addEventListener("click", () => {
         inQrcode = false;
         home();
     } else {
+        document.getElementById("settings").innerHTML = "⚙";
         document.getElementById("qrIcon").src = "../images/cross.svg";
         inQrcode = true;
         inSettings = false;
         document.getElementById("settingsSection").style.display = "none";
         document.getElementById("easySection").style.display = "none";
-        document.getElementById("advancedSection").style.display = "none";
+        document.getElementById("classicSection").style.display = "none";
         document.getElementById("qrCodeSection").style.display = "block";
     }
 });

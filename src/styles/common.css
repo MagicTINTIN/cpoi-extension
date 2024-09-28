@@ -56,6 +56,10 @@ nav {
     transition: all 0.2s;
 }
 
+.verysmall {
+    font-size: x-small;
+}
+
 .navSvgBtn {
     height: 23px;
     width: 23px;
