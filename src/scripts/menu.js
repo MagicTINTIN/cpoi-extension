@@ -1,8 +1,8 @@
 const DEFAULT_MAX_LENGTH = 1700;
 const AGGREGATE_MAX_LENGTH = 60000;
 
-function urlEncode(rawInput) {
-    let input = encodeHTMLEntities(rawInput);
+function urlEncode(input) {
+    // let input = encodeHTMLEntities(rawInput);
     return input.split('').map(c => {
         if (/[a-zA-Z0-9\-_.~?]/.test(c)) {
             return c;
@@ -53,7 +53,21 @@ function chunkString(inputString, maxLength) {
     let start = 0;
 
     while (start < inputString.length) {
-        chunks.push(inputString.slice(start, start + maxLength));
+        let newString = inputString.slice(start, start + maxLength);
+        if (newString.includes("%3Cscript")) {
+            let subStrings = newString.split("%3Cscript");
+            for (let index = 0; index < subStrings.length; index++) {
+                let s = "";
+                if (index > 0)
+                    s+="ipt";
+                s+=subStrings[index];
+                if (index < subStrings.length - 1)
+                    s+="%3Cscr";
+                chunks.push(s);
+            }
+        }
+        else
+            chunks.push(newString);
         start += maxLength;
     }
 
@@ -109,6 +123,12 @@ function getCodeFromCPOI(ret, mode, content, lang = 'en') {
     if (content == '' || content.length > INPUT_MAX_LENGTH) return setError("dataInput", `${localSettings.lang == "fr" ? "Longueur maximale : " : "Max length: "} ${INPUT_MAX_LENGTH} !`);
     lastStringRequest = content;
 
+    if (content.includes("%3Cscript")) {
+        if (INPUT_MAX_LENGTH == DEFAULT_MAX_LENGTH)
+            return setError("dataInputInfo", `${localSettings.lang == "fr" ? "Can't contain &lt;script&gt;" : "Ne peut pas contenir &lt;script&gt;"} !`);
+        else return recursiveSend(ret, chunkString(content, DEFAULT_MAX_LENGTH));
+    }
+
     if (content.length <= DEFAULT_MAX_LENGTH)
         fetch(`${localSettings.instance}?l=${lang}&t=${localSettings.type}${localSettings.const ? "&m=const" : ""}&${mode}=${content}`)
             .then(response => response.text())
@@ -130,9 +150,14 @@ function getClipboardFromCPOI(ret, code) {
 
 function getEasyFromCPOI(ret, content, lang = 'en') {
     if (content == lastStringRequest) return ret.value = lastCode;
-    console.log(content.length, content);
     if (content == '' || content.length > INPUT_MAX_LENGTH) return setError("autoInputInfo", `${localSettings.lang == "fr" ? "Longueur maximale : " : "Max length: "} ${INPUT_MAX_LENGTH} !`);
     lastStringRequest = content;
+
+    if (content.includes("%3Cscript")) {
+        if (INPUT_MAX_LENGTH == DEFAULT_MAX_LENGTH)
+            return setError("autoInputInfo", `${localSettings.lang == "fr" ? "Can't contain &lt;script&gt;" : "Ne peut pas contenir &lt;script&gt;"} !`);
+        else return recursiveSend(ret, chunkString(content, DEFAULT_MAX_LENGTH));
+    }
 
     console.log(`${localSettings.instance}?l=${lang}&t=${localSettings.type}&e=${content}`);
     // console.log(`${localSettings.instance}?${lang}&e=${urlEncode(content)}`);
@@ -239,6 +264,8 @@ autoInput.addEventListener("keydown", function (e) {
 
     if (urlEncode(autoInput.value).length > INPUT_MAX_LENGTH)
         setError("autoInputInfo", `${localSettings.lang == "fr" ? "Longueur maximale : " : "Max length: "} ${INPUT_MAX_LENGTH} (${INPUT_MAX_LENGTH - urlEncode(autoInput.value).length})`);
+    else if (urlEncode(autoInput.value).includes("%3Cscript") && INPUT_MAX_LENGTH == DEFAULT_MAX_LENGTH)
+        setError("autoInputInfo", `${localSettings.lang == "fr" ? "Can't contain &lt;script&gt;" : "Ne peut pas contenir &lt;script&gt;"} !`);
     else
         setError("autoInputInfo", "");
 });
@@ -260,6 +287,8 @@ dataInput.addEventListener("keydown", function (e) {
 
     if (urlEncode(dataInput.value).length > INPUT_MAX_LENGTH)
         setError("dataInputInfo", `${localSettings.lang == "fr" ? "Longueur maximale : " : "Max length: "} ${INPUT_MAX_LENGTH} (${INPUT_MAX_LENGTH - urlEncode(dataInput.value).length})`);
+    else if (urlEncode(dataInput.value).includes("%3Cscript") && INPUT_MAX_LENGTH == DEFAULT_MAX_LENGTH)
+        setError("autoInputInfo", `${localSettings.lang == "fr" ? "Can't contain &lt;script&gt;" : "Ne peut pas contenir &lt;script&gt;"} !`);
     else
         setError("dataInputInfo", "");
 });
