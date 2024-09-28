@@ -11,10 +11,13 @@ function urlEncode(input) {
 // COMMINUCATION FUNCTIONS
 
 const regex = /^[a-z]{1,6}\-[a-z]{1,6}\-[a-z]{1,6}$/;
+let lastStringRequest = "";
+let lastCode = "";
 
 function updateAndClipboardCopy(obj, value, isCode = false) {
     console.log(value);
     obj.value = value;
+    lastCode = value;
     navigator.clipboard.writeText(value);
     if (isCode) {
         document.getElementById("qrcode").innerHTML = "";
@@ -25,7 +28,9 @@ function updateAndClipboardCopy(obj, value, isCode = false) {
 }
 
 function getCodeFromCPOI(ret, mode, content, lang = 'en') {
-    if (content == '' || mode == '') return "Input not filled";
+    if (content == '' || mode == '' || content == lastStringRequest) return ret.value = lastCode;
+    lastStringRequest = content;
+    
     fetch(`${localSettings.instance}?l=${lang}&${mode}=${urlEncode(content)}`)
         .then(response => response.text())
         .then(text => {
@@ -44,7 +49,9 @@ function getClipboardFromCPOI(ret, code) {
 
 
 function getEasyFromCPOI(ret, content, lang = 'en') {
-    if (content == '') return "Input not filled";
+    if (content == '' || content == lastStringRequest) return ret.value = lastCode;
+    lastStringRequest = content;
+    
     // console.log(`${localSettings.instance}?${lang}&e=${urlEncode(content)}`);
     fetch(`${localSettings.instance}?l=${lang}&e=${urlEncode(content)}`)
         .then(response => response.text())
