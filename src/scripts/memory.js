@@ -64,11 +64,12 @@ function set(kvObject) {
 }
 
 function getAll(callback) {
-    get(["theme", "lang", "mode", "instance", "type"], (values) => {
+    get(["theme", "lang", "mode", "instance", "type", "const"], (values) => {
         if (!values["theme"]) values.theme = "dark";
         if (!values["lang"]) values.lang = "en";
         if (!values["mode"]) values.mode = "easy";
         if (!values["type"]) values.type = "n";
+        if (!values["const"]) values.const = false;
         if (!values["instance"]) values.instance = "https://cpoi.softplus.fr/";
         localSettings = values;
         callback();

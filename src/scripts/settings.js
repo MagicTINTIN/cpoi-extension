@@ -70,6 +70,8 @@ function updtLang() {
     document.getElementById("cButton").innerHTML = localSettings.lang == "fr" ? "Copier" : "Copy";
     document.getElementById("pButton").innerHTML = localSettings.lang == "fr" ? "Coller" : "Paste";
     document.getElementById("aButton").innerHTML = localSettings.lang == "fr" ? "Copier/Coller" : "Copy/Paste";
+    // advanced
+    document.getElementById("settingConst").innerHTML = localSettings.lang == "fr" ? (localSettings.const ? "Inéditable" : "Longeur max") : (localSettings.const ? "Uneditable" : "Full length");
 
     // settings
     document.getElementById("settingsH4").innerHTML = localSettings.lang == "fr" ? "Paramètres" : "Settings";
@@ -151,6 +153,14 @@ function switchTimeDelete() {
         kv["type"] = "n";
     }
 
+    set(kv)
+    getAll(updateAll);
+}
+
+document.getElementById("settingConst").addEventListener("click", switchConst)
+function switchConst() {
+    let kv = {};
+    kv["const"] = localSettings.const ? false : true;
     set(kv)
     getAll(updateAll);
 }

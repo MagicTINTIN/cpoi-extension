@@ -31,7 +31,7 @@ function getCodeFromCPOI(ret, mode, content, lang = 'en') {
     if (content == '' || mode == '' || content == lastStringRequest) return ret.value = lastCode;
     lastStringRequest = content;
     
-    fetch(`${localSettings.instance}?l=${lang}&${mode}=${urlEncode(content)}`)
+    fetch(`${localSettings.instance}?l=${lang}&t=${localSettings.type}${localSettings.const ? "&m=const" : ""}&${mode}=${urlEncode(content)}`)
         .then(response => response.text())
         .then(text => {
             updateAndClipboardCopy(ret, text.slice(1), true);
@@ -53,7 +53,7 @@ function getEasyFromCPOI(ret, content, lang = 'en') {
     lastStringRequest = content;
     
     // console.log(`${localSettings.instance}?${lang}&e=${urlEncode(content)}`);
-    fetch(`${localSettings.instance}?l=${lang}&e=${urlEncode(content)}`)
+    fetch(`${localSettings.instance}?l=${lang}&t=${localSettings.type}&e=${urlEncode(content)}`)
         .then(response => response.text())
         .then(text => {
             if (regex.test(text.slice(1)))
@@ -81,6 +81,7 @@ function home() {
     document.getElementById("settingsSection").style.display = "none";
     document.getElementById("classicSection").style.display = localSettings.mode == "easy" ? "none" : "block";
     document.getElementById("qrCodeSection").style.display = "none";
+    document.getElementById("advancedSection").style.display = localSettings.mode == "advanced" ? "block" : "none";
 }
 
 // SUBMENUS
@@ -124,6 +125,7 @@ document.getElementById("qrGenButton").addEventListener("click", () => {
 });
 
 document.getElementById("saveSettings").addEventListener("click", () => {
+    document.getElementById("settings").innerHTML = "⚙";
     saveInstance();
     inSettings = false;
     home();
