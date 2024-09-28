@@ -16,9 +16,8 @@ function updateAndClipboardCopy(obj, value, isCode = false) {
     console.log(value);
     obj.value = value;
     navigator.clipboard.writeText(value);
-    console.log("isCode? ", isCode);
     if (isCode) {
-        console.log("isCode");
+        document.getElementById("qrcode").innerHTML = "";
         document.getElementById("qrGenButton").style.transform = "scale(1)";
         new QRCode(document.getElementById("qrcode"), `${localSettings.instance}?qr=1&l=${localSettings.lang}&e=${urlEncode(value)}`);
         document.getElementById("qrValue").innerHTML = `${localSettings.instance}?qr=1&l=${localSettings.lang}&e=${urlEncode(value)}`;
@@ -63,11 +62,11 @@ document.getElementById("qrGenButton").style.transform = "scale(0)";
 // COPY PASTE BUTTONS
 
 document.getElementById("aButton").addEventListener("click", () => {
-    getEasyFromCPOI(document.getElementById("autoOutput"), document.getElementById("autoInput").value);
+    getEasyFromCPOI(document.getElementById("autoOutput"), document.getElementById("autoInput").value, localSettings.lang);
     if (document.getElementById("autoInput").value == '') return;
     document.getElementById("autoOutput").style.transform = "scale(1)";
 });
-document.getElementById("cButton").addEventListener("click", () => { getCodeFromCPOI(document.getElementById("codeInput"), 'c', document.getElementById("dataInput").value) });
+document.getElementById("cButton").addEventListener("click", () => { getCodeFromCPOI(document.getElementById("codeInput"), 'c', document.getElementById("dataInput").value, localSettings.lang) });
 document.getElementById("pButton").addEventListener("click", () => { getClipboardFromCPOI(document.getElementById("dataInput"), document.getElementById("codeInput").value) });
 
 function home() {
