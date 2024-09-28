@@ -1,3 +1,6 @@
+const DEFAULT_MAX_LENGTH = 1700;
+const AGGREGATE_MAX_LENGTH = 60000;
+
 function urlEncode(input) {
     return input.split('').map(c => {
         if (/[a-zA-Z0-9\-_.~?]/.test(c)) {
@@ -19,6 +22,31 @@ function setError(idObj, message) {
     document.getElementById(idObj).innerHTML = message;
 }
 
+const popUp = document.getElementById("infoTempPopUp")
+popUp.style.display = "none";
+function setTempPopUp(visible, title = "", content = "") {
+    popUp.style.display = visible ? "flex" : "none";
+    popUp.innerHTML = `
+    <h2>${title}</h2>
+    <p>${content}</p>
+    `;
+}
+
+// function chunkString(str, length) {
+//     return str.match(new RegExp('(.{1,' + length + '}\s)\s*', 'g'));
+// }
+function chunkString(inputString, maxLength) {
+    const chunks = [];
+    let start = 0;
+
+    while (start < inputString.length) {
+        chunks.push(inputString.slice(start, start + maxLength));
+        start += maxLength;
+    }
+
+    return chunks;
+}
+
 function updateAndClipboardCopy(obj, value, isCode = false) {
     console.log(value);
     obj.value = value;
@@ -32,21 +60,52 @@ function updateAndClipboardCopy(obj, value, isCode = false) {
     }
 }
 
+function recursiveSend(ret, contents, code = "") {
+    console.log(contents);
+    for (const c of contents) {
+        console.log(c.length, c);
+    }
+    if (contents.length > 0) {
+        let req = "";
+        if (code == "")
+            req = `${localSettings.instance}?l=${lang}&t=${localSettings.type}&c=${contents.shift()}`;
+        else
+            req = `${localSettings.instance}?a=${code}:${contents.shift()}`;
+
+        setTempPopUp(true, localSettings.lang == "fr" ? "Envoi en cours..." : "Sending...", localSettings.lang == "fr" ? `${contents.length} fragments restants` : `${contents.length} fragments left`)
+        fetch(req)
+            .then(response => response.text())
+            .then(text => {
+                if (code == "") code = text.slice(1)
+                setTimeout(() => {
+                    recursiveSend(ret, contents, code);
+                }, 200);
+            });
+    }
+    else {
+        updateAndClipboardCopy(ret, code, true);
+        setTempPopUp(false);
+        if (localSettings.mode == "easy") document.getElementById("autoOutput").style.transform = "scale(1)";
+    }
+}
+
 function getCodeFromCPOI(ret, mode, content, lang = 'en') {
     if (content == lastStringRequest) ret.value = lastCode;
-    if (mode == '') setError("dataInput", `Internal error :/`);
+    if (mode == '') setError("dataInput", `${localSettings.lang == "fr" ? "Erreur interne" : "Internal error"} :/`);
     if (content == '' || content.length > INPUT_MAX_LENGTH) return setError("dataInput", `${localSettings.lang == "fr" ? "Longueur maximale : " : "Max length: "} ${INPUT_MAX_LENGTH} !`);
     lastStringRequest = content;
-    
-    fetch(`${localSettings.instance}?l=${lang}&t=${localSettings.type}${localSettings.const ? "&m=const" : ""}&${mode}=${urlEncode(content)}`)
-        .then(response => response.text())
-        .then(text => {
-            updateAndClipboardCopy(ret, text.slice(1), true);
-        });
+
+    if (content.length <= DEFAULT_MAX_LENGTH)
+        fetch(`${localSettings.instance}?l=${lang}&t=${localSettings.type}${localSettings.const ? "&m=const" : ""}&${mode}=${content}`)
+            .then(response => response.text())
+            .then(text => {
+                updateAndClipboardCopy(ret, text.slice(1), true);
+            });
+    else recursiveSend(ret, chunkString(content, DEFAULT_MAX_LENGTH));
 }
 
 function getClipboardFromCPOI(ret, code) {
-    if (code == '' || regex.test(code) == false) return setError("codeInputInfo", `"${code}" doesn't look like a valid code`);
+    if (code == '' || regex.test(code) == false) return setError("codeInputInfo", `"${code}" ${localSettings.lang == "fr" ? "ne ressemble pas à un code valide" : "doesn't look like a valid code"}`);
     fetch(`${localSettings.instance}?p=${code}`)
         .then(response => response.text())
         .then(text => {
@@ -59,16 +118,19 @@ function getEasyFromCPOI(ret, content, lang = 'en') {
     if (content == lastStringRequest) return ret.value = lastCode;
     if (content == '' || content.length > INPUT_MAX_LENGTH) return setError("autoInputInfo", `${localSettings.lang == "fr" ? "Longueur maximale : " : "Max length: "} ${INPUT_MAX_LENGTH} !`);
     lastStringRequest = content;
-    
+
     // console.log(`${localSettings.instance}?${lang}&e=${urlEncode(content)}`);
-    fetch(`${localSettings.instance}?l=${lang}&t=${localSettings.type}&e=${urlEncode(content)}`)
-        .then(response => response.text())
-        .then(text => {
-            if (regex.test(text.slice(1)))
-                updateAndClipboardCopy(ret, text.slice(1), true);
-            else
-                updateAndClipboardCopy(ret, text.slice(1));
-        });
+    if (content.length <= DEFAULT_MAX_LENGTH)
+        fetch(`${localSettings.instance}?l=${lang}&t=${localSettings.type}&e=${content}`)
+            .then(response => response.text())
+            .then(text => {
+                if (regex.test(text.slice(1)))
+                    updateAndClipboardCopy(ret, text.slice(1), true);
+                else
+                    updateAndClipboardCopy(ret, text.slice(1));
+                document.getElementById("autoOutput").style.transform = "scale(1)";
+            });
+    else recursiveSend(ret, chunkString(content, DEFAULT_MAX_LENGTH));
 }
 
 document.getElementById("autoOutput").style.transform = "scale(0)";
@@ -76,12 +138,8 @@ document.getElementById("qrGenButton").style.transform = "scale(0)";
 
 // COPY PASTE BUTTONS
 
-document.getElementById("aButton").addEventListener("click", () => {
-    getEasyFromCPOI(document.getElementById("autoOutput"), document.getElementById("autoInput").value, localSettings.lang);
-    if (document.getElementById("autoInput").value == '' || document.getElementById("autoInput").value.length > INPUT_MAX_LENGTH) return;
-    document.getElementById("autoOutput").style.transform = "scale(1)";
-});
-document.getElementById("cButton").addEventListener("click", () => { getCodeFromCPOI(document.getElementById("codeInput"), 'c', document.getElementById("dataInput").value, localSettings.lang) });
+document.getElementById("aButton").addEventListener("click", () => { getEasyFromCPOI(document.getElementById("autoOutput"), urlEncode(document.getElementById("autoInput").value), localSettings.lang); });
+document.getElementById("cButton").addEventListener("click", () => { getCodeFromCPOI(document.getElementById("codeInput"), 'c', urlEncode(document.getElementById("dataInput").value), localSettings.lang) });
 document.getElementById("pButton").addEventListener("click", () => { getClipboardFromCPOI(document.getElementById("dataInput"), document.getElementById("codeInput").value) });
 
 function home() {
@@ -163,8 +221,8 @@ autoInput.addEventListener("keydown", function (e) {
         ctrlPressed = true;
     }
 
-    if (autoInput.value.length > INPUT_MAX_LENGTH)
-        setError("autoInputInfo", `${localSettings.lang == "fr" ? "Longueur maximale : " : "Max length: "} ${INPUT_MAX_LENGTH} (${INPUT_MAX_LENGTH - autoInput.value.length})`);
+    if (urlEncode(autoInput.value).length > INPUT_MAX_LENGTH)
+        setError("autoInputInfo", `${localSettings.lang == "fr" ? "Longueur maximale : " : "Max length: "} ${INPUT_MAX_LENGTH} (${INPUT_MAX_LENGTH - urlEncode(autoInput.value).length})`);
     else
         setError("autoInputInfo", "");
 });
@@ -184,8 +242,8 @@ dataInput.addEventListener("keydown", function (e) {
         ctrlPressed = true;
     }
 
-    if (dataInput.value.length > INPUT_MAX_LENGTH)
-        setError("dataInputInfo", `${localSettings.lang == "fr" ? "Longueur maximale : " : "Max length: "} ${INPUT_MAX_LENGTH} (${INPUT_MAX_LENGTH - dataInput.value.length})`);
+    if (urlEncode(dataInput.value).length > INPUT_MAX_LENGTH)
+        setError("dataInputInfo", `${localSettings.lang == "fr" ? "Longueur maximale : " : "Max length: "} ${INPUT_MAX_LENGTH} (${INPUT_MAX_LENGTH - urlEncode(dataInput.value).length})`);
     else
         setError("dataInputInfo", "");
 });
