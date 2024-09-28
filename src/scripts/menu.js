@@ -1,14 +1,27 @@
 const DEFAULT_MAX_LENGTH = 1700;
 const AGGREGATE_MAX_LENGTH = 60000;
 
-function urlEncode(input) {
+function urlEncode(rawInput) {
+    let input = encodeHTMLEntities(rawInput);
     return input.split('').map(c => {
         if (/[a-zA-Z0-9\-_.~?]/.test(c)) {
             return c;
         } else {
-            return '%' + encodeURIComponent(c).slice(1).toUpperCase();
+            return encodeURIComponent(c).toUpperCase();
         }
     }).join('');
+}
+
+function decodeHTMLEntities(text) {
+    const tempElement = document.createElement('textarea');
+    tempElement.innerHTML = text;
+    return tempElement.value;
+}
+
+function encodeHTMLEntities(text) {
+    const tempElement = document.createElement('div');
+    tempElement.textContent = text;
+    return tempElement.innerHTML;
 }
 
 // COMMINUCATION FUNCTIONS
@@ -47,7 +60,8 @@ function chunkString(inputString, maxLength) {
     return chunks;
 }
 
-function updateAndClipboardCopy(obj, value, isCode = false) {
+function updateAndClipboardCopy(obj, rawValue, isCode = false) {
+    let value = decodeHTMLEntities(rawValue);
     console.log(value);
     obj.value = value;
     lastCode = value;
@@ -116,9 +130,11 @@ function getClipboardFromCPOI(ret, code) {
 
 function getEasyFromCPOI(ret, content, lang = 'en') {
     if (content == lastStringRequest) return ret.value = lastCode;
+    console.log(content.length, content);
     if (content == '' || content.length > INPUT_MAX_LENGTH) return setError("autoInputInfo", `${localSettings.lang == "fr" ? "Longueur maximale : " : "Max length: "} ${INPUT_MAX_LENGTH} !`);
     lastStringRequest = content;
 
+    console.log(`${localSettings.instance}?l=${lang}&t=${localSettings.type}&e=${content}`);
     // console.log(`${localSettings.instance}?${lang}&e=${urlEncode(content)}`);
     if (content.length <= DEFAULT_MAX_LENGTH)
         fetch(`${localSettings.instance}?l=${lang}&t=${localSettings.type}&e=${content}`)
