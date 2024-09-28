@@ -180,6 +180,7 @@ function updateAll() {
     console.log(localSettings);
     updtLang();
     updtTheme();
+    INPUT_MAX_LENGTH = localSettings.const ? 1800 : 60000;
 }
 
 function initUpdateAll() {

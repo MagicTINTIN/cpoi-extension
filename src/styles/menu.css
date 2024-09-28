@@ -181,7 +181,20 @@ button {
     box-shadow: 0 0 10px var(--fg);
 }
 
+.errorInfo {
+    box-sizing: border-box;
+    font-size: .6em;
+    font-weight: bold;
+    width: 100%;
+    margin: 0;
+    padding-left: 10%;
+    padding-right: 10%;
+    color: var(--r);
+    text-wrap: wrap;
+}
+
 #qrValue {
+    box-sizing: border-box;
     width: 100%;
     padding-left: .5em;
     padding-right: .5em;

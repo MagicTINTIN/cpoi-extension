@@ -13,6 +13,11 @@ function urlEncode(input) {
 const regex = /^[a-z]{1,6}\-[a-z]{1,6}\-[a-z]{1,6}$/;
 let lastStringRequest = "";
 let lastCode = "";
+let INPUT_MAX_LENGTH = 1800;
+
+function setError(idObj, message) {
+    document.getElementById(idObj).innerHTML = message;
+}
 
 function updateAndClipboardCopy(obj, value, isCode = false) {
     console.log(value);
@@ -28,7 +33,9 @@ function updateAndClipboardCopy(obj, value, isCode = false) {
 }
 
 function getCodeFromCPOI(ret, mode, content, lang = 'en') {
-    if (content == '' || mode == '' || content == lastStringRequest) return ret.value = lastCode;
+    if (content == lastStringRequest) ret.value = lastCode;
+    if (mode == '') setError("dataInput", `Internal error :/`);
+    if (content == '' || content.length > INPUT_MAX_LENGTH) return setError("dataInput", `${localSettings.lang == "fr" ? "Longueur maximale : " : "Max length: "} ${INPUT_MAX_LENGTH} !`);
     lastStringRequest = content;
     
     fetch(`${localSettings.instance}?l=${lang}&t=${localSettings.type}${localSettings.const ? "&m=const" : ""}&${mode}=${urlEncode(content)}`)
@@ -39,7 +46,7 @@ function getCodeFromCPOI(ret, mode, content, lang = 'en') {
 }
 
 function getClipboardFromCPOI(ret, code) {
-    if (code == '') return "Code not filled";
+    if (code == '' || regex.test(code) == false) return setError("codeInputInfo", `"${code}" doesn't look like a valid code`);
     fetch(`${localSettings.instance}?p=${code}`)
         .then(response => response.text())
         .then(text => {
@@ -49,7 +56,8 @@ function getClipboardFromCPOI(ret, code) {
 
 
 function getEasyFromCPOI(ret, content, lang = 'en') {
-    if (content == '' || content == lastStringRequest) return ret.value = lastCode;
+    if (content == lastStringRequest) return ret.value = lastCode;
+    if (content == '' || content.length > INPUT_MAX_LENGTH) return setError("autoInputInfo", `${localSettings.lang == "fr" ? "Longueur maximale : " : "Max length: "} ${INPUT_MAX_LENGTH} !`);
     lastStringRequest = content;
     
     // console.log(`${localSettings.instance}?${lang}&e=${urlEncode(content)}`);
@@ -70,7 +78,7 @@ document.getElementById("qrGenButton").style.transform = "scale(0)";
 
 document.getElementById("aButton").addEventListener("click", () => {
     getEasyFromCPOI(document.getElementById("autoOutput"), document.getElementById("autoInput").value, localSettings.lang);
-    if (document.getElementById("autoInput").value == '') return;
+    if (document.getElementById("autoInput").value == '' || document.getElementById("autoInput").value.length > INPUT_MAX_LENGTH) return;
     document.getElementById("autoOutput").style.transform = "scale(1)";
 });
 document.getElementById("cButton").addEventListener("click", () => { getCodeFromCPOI(document.getElementById("codeInput"), 'c', document.getElementById("dataInput").value, localSettings.lang) });
@@ -154,6 +162,11 @@ autoInput.addEventListener("keydown", function (e) {
     } else if (e.key === "Control") {
         ctrlPressed = true;
     }
+
+    if (autoInput.value.length > INPUT_MAX_LENGTH)
+        setError("autoInputInfo", `${localSettings.lang == "fr" ? "Longueur maximale : " : "Max length: "} ${INPUT_MAX_LENGTH} (${INPUT_MAX_LENGTH - autoInput.value.length})`);
+    else
+        setError("autoInputInfo", "");
 });
 autoInput.addEventListener("keyup", function (e) {
     if (e.key === "Control") {
@@ -170,6 +183,11 @@ dataInput.addEventListener("keydown", function (e) {
     } else if (e.key === "Control") {
         ctrlPressed = true;
     }
+
+    if (dataInput.value.length > INPUT_MAX_LENGTH)
+        setError("dataInputInfo", `${localSettings.lang == "fr" ? "Longueur maximale : " : "Max length: "} ${INPUT_MAX_LENGTH} (${INPUT_MAX_LENGTH - dataInput.value.length})`);
+    else
+        setError("dataInputInfo", "");
 });
 dataInput.addEventListener("keyup", function (e) {
     if (e.key === "Control") {
