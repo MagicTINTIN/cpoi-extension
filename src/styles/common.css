@@ -24,16 +24,51 @@ body {
     /* overflow-x: hidden; */
 }
 
+.buttonGroup {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.valign {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
 nav {
+    top: 0;
+    left: 0;
+    position: absolute;
+    box-sizing: border-box;
+    width: 20rem;
     padding: 8px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
-nav span {
+.textButton {
+    box-sizing: border-box;
     font-weight: 900;
-    font-size: .9em;
+    font-size: 1em;
+}
+
+.navSvgBtn {
+    height: 23px;
+    width: 23px;
+    margin-right: 12px;
+    margin-left: 12px;
+    filter: var(--svgn);
+}
+
+.navSvgBtn:hover {
+    filter: var(--svgh);
+}
+
+.navSvgBtn:active {
+    filter: var(--svgn);
 }
 
 .spanButton {
@@ -58,9 +93,8 @@ nav span {
 .spanButton:active {
     transform: scale(0.9);
 }
-
-h1, h4 {
-    margin-top: 0;
+h1,
+h4 {
     font-weight: bold;
     text-align: center;
 
@@ -72,7 +106,13 @@ h1, h4 {
     -ms-user-select: none;
 }
 
+h1 {
+    margin-top: 0.5em;
+}
+
+
 h4 {
+    margin-top: 0;
     margin-bottom: 5px;
 }
 

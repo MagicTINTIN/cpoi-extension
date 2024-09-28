@@ -24,4 +24,6 @@
     --bg: #000000;
     --fg: #ffffff;
     --fgv: #cccccc;
+    --svgn: brightness(0.8);
+    --svgh: brightness(1);
 }

@@ -31,6 +31,8 @@ function updtTheme() {
         document.documentElement.style.setProperty('--bg', '#000000');
         document.documentElement.style.setProperty('--fg', '#ffffff');
         document.documentElement.style.setProperty('--fgv', '#cccccc');
+        document.documentElement.style.setProperty('--svgn', 'brightness(0.8)');
+        document.documentElement.style.setProperty('--svgh', 'brightness(1)');
     } else {
         document.documentElement.style.setProperty('--r', '#FE3420');
         document.documentElement.style.setProperty('--rv', '#FF7769');
@@ -57,6 +59,8 @@ function updtTheme() {
         document.documentElement.style.setProperty('--fg', '#000000');
         document.documentElement.style.setProperty('--bg', '#ffffff');
         document.documentElement.style.setProperty('--bgv', '#eeeeee');
+        document.documentElement.style.setProperty('--svgn', 'brightness(0.2)');
+        document.documentElement.style.setProperty('--svgh', 'brightness(0)');
     }
 }
 
