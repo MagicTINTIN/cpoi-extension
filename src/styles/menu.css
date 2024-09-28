@@ -180,3 +180,12 @@ button {
     border-color: var(--fg);
     box-shadow: 0 0 10px var(--fg);
 }
+
+#qrValue {
+    width: 100%;
+    padding-left: .5em;
+    padding-right: .5em;
+    text-align: center;
+    text-wrap: wrap;
+    font-size: .5em;
+}

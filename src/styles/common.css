@@ -53,6 +53,7 @@ nav {
     box-sizing: border-box;
     font-weight: 900;
     font-size: 1em;
+    transition: all 0.2s;
 }
 
 .navSvgBtn {
@@ -61,6 +62,7 @@ nav {
     margin-right: 12px;
     margin-left: 12px;
     filter: var(--svgn);
+    transition: all 0.2s;
 }
 
 .navSvgBtn:hover {
