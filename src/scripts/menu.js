@@ -207,6 +207,7 @@ function showTerms() {
 document.getElementById("displayTerms").addEventListener("click", showTerms)
 
 document.getElementById("iagreeButton").addEventListener("click", () => {
+    set({tou:true});
     document.getElementById("settings").style.display = "block"
     document.getElementById("settings").innerHTML = "⚙";
     home();

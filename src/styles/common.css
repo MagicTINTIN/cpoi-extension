@@ -230,6 +230,45 @@ section {
     text-shadow: 0 0 3px var(--fgv);
 }
 
+.terms {
+    box-sizing: border-box;
+    height: 20rem;
+    width: 19rem;
+    margin: auto;
+    overflow-y: auto;
+    background-color: var(--bgv);
+    color: var(--fg);
+    border: solid 1px var(--b);
+    box-shadow: 0px 0px 5px inset var(--b), 0px 0px 20px var(--b);
+    transition: all 0.2s;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: justify;
+
+    font-size: 0.6em;
+}
+
+.terms h5 {
+    margin-top: 1em;
+    margin-bottom: 0.5em;
+    font-size: 1em;
+}
+
+.terms:hover {
+    background-color: var(--bg);
+}
+
+#byClickText {
+    padding-left: 15px;
+    padding-right: 15px;
+    font-size: small;
+    color: var(--fgv);
+}
+
+.licenseLink, .licenseLink:visited {
+    color: var(--fg);
+}
+
 /* ----------- SCROLLBAR ----------- */
 
 ::-webkit-scrollbar {
@@ -238,7 +277,6 @@ section {
 }
 
 ::-webkit-scrollbar:hover {
-    width: 14px;
     background: #00000000;
 }
 
@@ -257,7 +295,6 @@ section {
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    width: 14px;
     border-radius: 4px;
     background-color: var(--fg);
 }

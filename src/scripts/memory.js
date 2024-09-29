@@ -102,7 +102,8 @@ function removeAll(callback = () => { }) {
 }
 
 function getAll(callback = () => { }) {
-    get(["theme", "lang", "mode", "instance", "type", "const"], (values) => {
+    get(["tou", "theme", "lang", "mode", "instance", "type", "const"], (values) => {
+        if (!values["tou"]) values.tou = false;
         if (!values["theme"]) values.theme = "dark";
         if (!values["lang"]) values.lang = "en";
         if (!values["mode"]) values.mode = "easy";

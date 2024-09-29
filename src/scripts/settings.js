@@ -78,7 +78,7 @@ function updtLang() {
     document.getElementById("themeTitle").innerHTML = localSettings.lang == "fr" ? "Thème" : "Theme";
     document.getElementById("deleteTitle").innerHTML = localSettings.lang == "fr" ? "Supprimer après" : "Delete after";
     document.getElementById("settingTheme").innerHTML = localSettings.lang == "fr" ? (localSettings.theme == "dark" ? "Sombre" : "Clair") : (localSettings.theme == "dark" ? "Dark" : "Light");
-    document.getElementById("displayTerms").innerHTML = localSettings.lang == "fr" ? "Termes d'Utilisation" : "Terms of Use";
+    document.getElementById("displayTerms").innerHTML = localSettings.lang == "fr" ? "Conditions Générales d'Utilisation" : "Terms Of Use";
 
     // mode
     if (localSettings.mode == "classic")
@@ -109,6 +109,15 @@ function updtLang() {
     document.getElementById("settingInstance").value = localSettings.instance;
 
     // terms
+    document.getElementById("termsH4").innerHTML = localSettings.lang == "fr" ? "Conditions Générales d'Utilisation" : "Terms Of Use";
+    document.getElementById("byClickText").innerText = localSettings.lang == "fr" ? `En cliquant "J'accepte" ou en utilisant nos services, vous acceptez les CGU ci-dessus.` : `By clicking "I agree" or using our services, you agree to the TOU above.`
+    if (localSettings.lang == "fr") {
+        document.getElementById("frTerms").style.display = "block";
+        document.getElementById("enTerms").style.display = "none";
+    } else {
+        document.getElementById("enTerms").style.display = "block";
+        document.getElementById("frTerms").style.display = "none";
+    }
 }
 
 document.getElementById("lang").addEventListener("click", switchLanguage)
@@ -190,10 +199,15 @@ function initUpdateAll() {
     updateAll();
     home();
     autoFocus();
+
+    // display TOU
+    if (localSettings.tou == false) showTerms();
 }
 
 getAll(initUpdateAll);
 
-document.getElementById("settingReset").addEventListener("click", () => { removeAll(() => {
-    getAll(initUpdateAll);
-}) })
+document.getElementById("settingReset").addEventListener("click", () => {
+    removeAll(() => {
+        getAll(initUpdateAll);
+    })
+})
