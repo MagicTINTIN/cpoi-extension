@@ -208,6 +208,28 @@ section {
     background-color: var(--bg);
 }
 
+.termsButton {
+    font-size: small;
+    margin: auto;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    width: 100%;
+    text-align: center;
+    text-decoration: underline;
+    color: var(--fgv);
+}
+
+.termsButton:hover {
+    color: var(--fg);
+    text-shadow: 0 0 5px var(--fgv);
+}
+
+.termsButton:active {
+    transform: scale(0.9);
+    color: var(--fgv);
+    text-shadow: 0 0 3px var(--fgv);
+}
+
 /* ----------- SCROLLBAR ----------- */
 
 ::-webkit-scrollbar {

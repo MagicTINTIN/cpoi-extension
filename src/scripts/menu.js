@@ -188,10 +188,31 @@ function home() {
     document.getElementById("settingsSection").style.display = "none";
     document.getElementById("classicSection").style.display = localSettings.mode == "easy" ? "none" : "block";
     document.getElementById("qrCodeSection").style.display = "none";
+    document.getElementById("termsSection").style.display = "none";
     document.getElementById("advancedSection").style.display = localSettings.mode == "advanced" ? "block" : "none";
 }
 
 // SUBMENUS
+
+function showTerms() {
+    document.getElementById("settings").style.display = "none"
+    document.getElementById("qrGenButton").style.transform = "scale(0)";
+    document.getElementById("easySection").style.display = "none";
+    document.getElementById("settingsSection").style.display = "none";
+    document.getElementById("classicSection").style.display = "none";
+    document.getElementById("qrCodeSection").style.display = "none";
+    document.getElementById("termsSection").style.display = "block";
+    document.getElementById("advancedSection").style.display = "none"
+}
+document.getElementById("displayTerms").addEventListener("click", showTerms)
+
+document.getElementById("iagreeButton").addEventListener("click", () => {
+    document.getElementById("settings").style.display = "block"
+    document.getElementById("settings").innerHTML = "⚙";
+    home();
+    autoFocus();
+})
+
 
 let inSettings = false;
 document.getElementById("settings").addEventListener("click", () => {

@@ -78,6 +78,7 @@ function updtLang() {
     document.getElementById("themeTitle").innerHTML = localSettings.lang == "fr" ? "Thème" : "Theme";
     document.getElementById("deleteTitle").innerHTML = localSettings.lang == "fr" ? "Supprimer après" : "Delete after";
     document.getElementById("settingTheme").innerHTML = localSettings.lang == "fr" ? (localSettings.theme == "dark" ? "Sombre" : "Clair") : (localSettings.theme == "dark" ? "Dark" : "Light");
+    document.getElementById("displayTerms").innerHTML = localSettings.lang == "fr" ? "Termes d'Utilisation" : "Terms of Use";
 
     // mode
     if (localSettings.mode == "classic")
@@ -106,6 +107,8 @@ function updtLang() {
 
     // settings instance value (not really language dependant)
     document.getElementById("settingInstance").value = localSettings.instance;
+
+    // terms
 }
 
 document.getElementById("lang").addEventListener("click", switchLanguage)
