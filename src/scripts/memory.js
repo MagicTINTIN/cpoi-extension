@@ -13,7 +13,7 @@ let localSettings;
  * @param key 
  * @param callback that will take one arg
  */
-function get(key, callback) {
+function get(key, callback = (value) => { }) {
     if (typeof key == "object") {
         if (firefox)
             thisBrowser.storage.sync.get(key).then((values) => {
@@ -25,7 +25,7 @@ function get(key, callback) {
                 // console.log("VALUE: ", values);
                 callback(values);
             });
-        return [];
+        return;
     }
     else if (typeof key == "string") {
         if (firefox)
@@ -38,7 +38,7 @@ function get(key, callback) {
                 //console.log("VALUE: ", value);
                 callback(value);
             });
-        return "";
+        return;
     }
     else
         return console.log("The following type is not gettable:", key);
@@ -49,21 +49,59 @@ function get(key, callback) {
  * @param kvObject {key: value, key2: value2...}
  * @returns nothing
  */
-function set(kvObject) {
+function set(kvObject, callback = () => { }) {
     console.log(kvObject);
     if (typeof kvObject == "object") {
         if (firefox)
             browser.storage.sync.set(kvObject).then(() => {
                 console.log("Settings saved");
+                callback();
             }, (reason) => { console.error("ERROR WHILE GETTING SETTINGS", reason); });
         else
-            thisBrowser.storage.sync.set(kvObject, function () { console.log("Settings saved"); });
+            thisBrowser.storage.sync.set(kvObject, function () { console.log("Settings saved"); callback() });
     }
     else
         return console.log("The following type is not settable:", key);
 }
 
-function getAll(callback) {
+/**
+ * remove values by key 
+ * @param keys ["key1", "key2"] 
+ * @param callback that will take one arg
+ */
+function remove(keys, callback = () => { }) {
+    if (firefox)
+        thisBrowser.storage.sync.remove(keys).then(() => {
+            console.log("Deleted", keys);
+        });
+    else
+        thisBrowser.storage.sync.remove(keys, function () {
+            var error = chrome.runtime.lastError;
+            if (error) {
+                console.error(error);
+            }
+            console.log("Deleted", keys);
+        });
+}
+
+function removeAll(callback = () => { }) {
+    if (firefox)
+        thisBrowser.storage.sync.clear().then(() => {
+            console.log("All settings have been reset!");
+            callback();
+        });
+    else
+        thisBrowser.storage.sync.clear(function () {
+            var error = chrome.runtime.lastError;
+            if (error) {
+                console.error(error);
+            }
+            console.log("All settings have been reset!");
+            callback();
+        });
+}
+
+function getAll(callback = () => { }) {
     get(["theme", "lang", "mode", "instance", "type", "const"], (values) => {
         if (!values["theme"]) values.theme = "dark";
         if (!values["lang"]) values.lang = "en";

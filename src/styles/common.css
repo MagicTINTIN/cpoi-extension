@@ -148,15 +148,23 @@ section {
     height: 100%;
 }
 
+#footerLinkContainer {
+    width: 100%;
+
+    margin: auto;
+    margin-bottom: 8px;
+    margin-top: 8px;
+    text-align: center;
+}
+
 .bottomLink {
     font-size: x-small;
     color: var(--fgv);
-    width: 100%;
+    /* width: 75vw; */
     text-decoration: none;
     text-align: center;
     transition: all 0.2s;
     box-sizing: border-box;
-    margin: 8px;
 }
 
 .bottomLink:visited {

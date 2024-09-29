@@ -190,3 +190,7 @@ function initUpdateAll() {
 }
 
 getAll(initUpdateAll);
+
+document.getElementById("settingReset").addEventListener("click", () => { removeAll(() => {
+    getAll(initUpdateAll);
+}) })
