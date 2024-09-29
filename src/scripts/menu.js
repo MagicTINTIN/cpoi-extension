@@ -336,41 +336,24 @@ codeInput.addEventListener("keyup", function (e) {
     }
 });
 
-// POST
+// POST ping
 
-document.getElementById("postButton").addEventListener("click", () => {
-    // fetch(`${localSettings.instance}`, { //?post=1
-    //     method: "POST",
-    //     body: JSON.stringify({ ping: "ping" }),
-    //     // body: "msg=ping",
-    //     // headers:
-    //     // {
-    //     //     "Content-Type": "application/x-www-form-urlencoded"
-    //     // }
-
-    // }).then((response) => {
-
-    //     console.log(response);
-    //     response.text().then((text) => {
-    //         console.log(text);
-    //         setTempPopUp(true, `POST: ${response.statusText}`, text);
-    //     })
-    // });
+function sendPing() {
     setTempPopUp(true, `Waiting...`, "");
     fetch(`${localSettings.instance}/index.php`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/x-www-form-urlencoded', // Set appropriate content type
+            'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: new URLSearchParams({
-            'ping': 'yes' // Send key-value pair in the POST request
+            'ping': 'yes'
         })
     })
-        .then(response => response.text()) // Parse the response as plain text
+        .then(response => response.text())
         .then(data => {
             // console.log(response);
-            console.log(data); // Output the response (should print "pong: yes")
+            console.log(data);
             setTempPopUp(true, `POST`, data);
         })
         .catch(error => console.error('Error:', error));
-})
+}

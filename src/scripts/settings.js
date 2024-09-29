@@ -71,7 +71,8 @@ function updtLang() {
     document.getElementById("pButton").innerHTML = localSettings.lang == "fr" ? "Coller" : "Paste";
     document.getElementById("aButton").innerHTML = localSettings.lang == "fr" ? "Copier/Coller" : "Copy/Paste";
     // advanced
-    document.getElementById("settingConst").innerHTML = localSettings.lang == "fr" ? (localSettings.const ? "Inéditable" : "Longeur max") : (localSettings.const ? "Uneditable" : "Full length");
+    document.getElementById("settingPost").innerHTML = localSettings.lang == "fr" ? (localSettings.post ? "méthode POST" : "méthode GET") : (localSettings.post ? "POST method" : "GET method");
+    document.getElementById("settingConst").innerHTML = localSettings.lang == "fr" ? (localSettings.const ? "Inéditable" : "Agrégeable") : (localSettings.const ? "Uneditable" : "Aggregable");
 
     // settings
     document.getElementById("settingsH4").innerHTML = localSettings.lang == "fr" ? "Paramètres" : "Settings";
@@ -174,6 +175,14 @@ document.getElementById("settingConst").addEventListener("click", switchConst)
 function switchConst() {
     let kv = {};
     kv["const"] = localSettings.const ? false : true;
+    set(kv)
+    getAll(updateAll);
+}
+
+document.getElementById("settingPost").addEventListener("click", switchPost)
+function switchPost() {
+    let kv = {};
+    kv["post"] = localSettings.post ? false : true;
     set(kv)
     getAll(updateAll);
 }

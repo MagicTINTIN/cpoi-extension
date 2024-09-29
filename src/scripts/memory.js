@@ -102,13 +102,15 @@ function removeAll(callback = () => { }) {
 }
 
 function getAll(callback = () => { }) {
-    get(["tou", "theme", "lang", "mode", "instance", "type", "const"], (values) => {
-        if (!values["tou"]) values.tou = false;
+    get(["tou", "theme", "lang", "mode", "instance", "type", "const", "post"], (values) => {
+        // console.log(values);
+        if (values["tou"] === undefined) values.tou = false;
         if (!values["theme"]) values.theme = "dark";
         if (!values["lang"]) values.lang = "en";
         if (!values["mode"]) values.mode = "easy";
         if (!values["type"]) values.type = "n";
-        if (!values["const"]) values.const = false;
+        if (!values["const"] === undefined) values.const = true;
+        if (!values["post"] === undefined) values.post = true;
         if (!values["instance"]) values.instance = "https://cpoi.softplus.fr/";
         localSettings = values;
         callback();
