@@ -78,7 +78,7 @@ function chunkString(inputString, maxLength) {
 
 function updateAndClipboardCopy(obj, rawValue, isCode = false) {
     let value = decodeHTMLEntities(rawValue);
-    console.log(value);
+    // console.log(value);
     obj.value = value;
     lastCode = value;
     navigator.clipboard.writeText(value);
@@ -91,10 +91,10 @@ function updateAndClipboardCopy(obj, rawValue, isCode = false) {
 }
 
 function recursiveSend(ret, contents, code = "") {
-    console.log(contents);
-    for (const c of contents) {
-        console.log(c.length, c);
-    }
+    // console.log(contents);
+    // for (const c of contents) {
+    //     console.log(c.length, c);
+    // }
     if (contents.length > 0) {
         let req = "";
         if (code == "")
@@ -206,7 +206,7 @@ function getEasyFromCPOI(ret, content, lang = 'en') {
             else return recursiveSend(ret, chunkString(content, DEFAULT_MAX_LENGTH));
         }
 
-        console.log(`${localSettings.instance}?l=${lang}&t=${localSettings.type}${localSettings.const ? "&m=const" : ""}&e=${content}`);
+        // console.log(`${localSettings.instance}?l=${lang}&t=${localSettings.type}${localSettings.const ? "&m=const" : ""}&e=${content}`);
         // console.log(`${localSettings.instance}?${lang}&e=${urlEncode(content)}`);
         if (content.length <= DEFAULT_MAX_LENGTH)
             fetch(`${localSettings.instance}?l=${lang}&t=${localSettings.type}&e=${content}`)

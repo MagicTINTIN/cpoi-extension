@@ -50,7 +50,7 @@ function get(key, callback = (value) => { }) {
  * @returns nothing
  */
 function set(kvObject, callback = () => { }) {
-    console.log(kvObject);
+    // console.log(kvObject);
     if (typeof kvObject == "object") {
         if (firefox)
             browser.storage.sync.set(kvObject).then(() => {

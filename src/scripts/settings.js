@@ -155,7 +155,6 @@ function switchMode() {
 
 document.getElementById("settingTimeDelete").addEventListener("click", switchTimeDelete)
 function switchTimeDelete() {
-    console.log("ntm");
     let kv = {};
     if (localSettings.type == "n") {
         kv["type"] = "u";
@@ -199,7 +198,7 @@ function saveInstance() {
 // Initializing and updating all settings
 
 function updateAll() {
-    console.log(localSettings);
+    // console.log(localSettings);
     updtLang();
     updtTheme();
     INPUT_MAX_LENGTH = localSettings.post ? AGGREGATE_MAX_LENGTH : (localSettings.const ? DEFAULT_MAX_LENGTH : AGGREGATE_MAX_LENGTH);
