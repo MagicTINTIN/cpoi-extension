@@ -59,10 +59,10 @@ function chunkString(inputString, maxLength) {
             for (let index = 0; index < subStrings.length; index++) {
                 let s = "";
                 if (index > 0)
-                    s+="ipt";
-                s+=subStrings[index];
+                    s += "ipt";
+                s += subStrings[index];
                 if (index < subStrings.length - 1)
-                    s+="%3Cscr";
+                    s += "%3Cscr";
                 chunks.push(s);
             }
         }
@@ -104,7 +104,7 @@ function recursiveSend(ret, contents, code = "") {
         fetch(req)
             .then(response => response.text())
             .then(text => {
-                if (code == "") code = text.slice(1)
+                if (code == "") code = text.startsWith("\n") ? text.slice(1) : text
                 setTimeout(() => {
                     recursiveSend(ret, contents, code);
                 }, 200);
@@ -133,7 +133,7 @@ function getCodeFromCPOI(ret, mode, content, lang = 'en') {
         fetch(`${localSettings.instance}?l=${lang}&t=${localSettings.type}${localSettings.const ? "&m=const" : ""}&${mode}=${content}`)
             .then(response => response.text())
             .then(text => {
-                updateAndClipboardCopy(ret, text.slice(1), true);
+                updateAndClipboardCopy(ret, text.startsWith("\n") ? text.slice(1) : text, true);
             });
     else recursiveSend(ret, chunkString(content, DEFAULT_MAX_LENGTH));
 }
@@ -143,7 +143,7 @@ function getClipboardFromCPOI(ret, code) {
     fetch(`${localSettings.instance}?p=${code}`)
         .then(response => response.text())
         .then(text => {
-            updateAndClipboardCopy(ret, text.slice(1));
+            updateAndClipboardCopy(ret, text.startsWith("\n") ? text.slice(1) : text);
         });
 }
 
@@ -165,10 +165,10 @@ function getEasyFromCPOI(ret, content, lang = 'en') {
         fetch(`${localSettings.instance}?l=${lang}&t=${localSettings.type}&e=${content}`)
             .then(response => response.text())
             .then(text => {
-                if (regex.test(text.slice(1)))
-                    updateAndClipboardCopy(ret, text.slice(1), true);
+                if (regex.test(text.startsWith("\n") ? text.slice(1) : text))
+                    updateAndClipboardCopy(ret, text.startsWith("\n") ? text.slice(1) : text, true);
                 else
-                    updateAndClipboardCopy(ret, text.slice(1));
+                    updateAndClipboardCopy(ret, text.startsWith("\n") ? text.slice(1) : text);
                 document.getElementById("autoOutput").style.transform = "scale(1)";
             });
     else recursiveSend(ret, chunkString(content, DEFAULT_MAX_LENGTH));
@@ -207,7 +207,7 @@ function showTerms() {
 document.getElementById("displayTerms").addEventListener("click", showTerms)
 
 document.getElementById("iagreeButton").addEventListener("click", () => {
-    set({tou:true});
+    set({ tou: true });
     document.getElementById("settings").style.display = "block"
     document.getElementById("settings").innerHTML = "⚙";
     home();
@@ -335,3 +335,42 @@ codeInput.addEventListener("keyup", function (e) {
         ctrlPressed = false;
     }
 });
+
+// POST
+
+document.getElementById("postButton").addEventListener("click", () => {
+    // fetch(`${localSettings.instance}`, { //?post=1
+    //     method: "POST",
+    //     body: JSON.stringify({ ping: "ping" }),
+    //     // body: "msg=ping",
+    //     // headers:
+    //     // {
+    //     //     "Content-Type": "application/x-www-form-urlencoded"
+    //     // }
+
+    // }).then((response) => {
+
+    //     console.log(response);
+    //     response.text().then((text) => {
+    //         console.log(text);
+    //         setTempPopUp(true, `POST: ${response.statusText}`, text);
+    //     })
+    // });
+    setTempPopUp(true, `Waiting...`, "");
+    fetch(`${localSettings.instance}/index.php`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded', // Set appropriate content type
+        },
+        body: new URLSearchParams({
+            'ping': 'yes' // Send key-value pair in the POST request
+        })
+    })
+        .then(response => response.text()) // Parse the response as plain text
+        .then(data => {
+            // console.log(response);
+            console.log(data); // Output the response (should print "pong: yes")
+            setTempPopUp(true, `POST`, data);
+        })
+        .catch(error => console.error('Error:', error));
+})

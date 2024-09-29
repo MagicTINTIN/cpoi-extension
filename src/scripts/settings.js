@@ -118,6 +118,7 @@ function updtLang() {
         document.getElementById("enTerms").style.display = "block";
         document.getElementById("frTerms").style.display = "none";
     }
+    document.getElementById("iagreeButton").innerHTML = localSettings.lang == "fr" ? "J'accepte" : "I agree";
 }
 
 document.getElementById("lang").addEventListener("click", switchLanguage)
