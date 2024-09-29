@@ -202,7 +202,7 @@ function updateAll() {
     console.log(localSettings);
     updtLang();
     updtTheme();
-    INPUT_MAX_LENGTH = localSettings.const ? DEFAULT_MAX_LENGTH : AGGREGATE_MAX_LENGTH;
+    INPUT_MAX_LENGTH = localSettings.post ? AGGREGATE_MAX_LENGTH : (localSettings.const ? DEFAULT_MAX_LENGTH : AGGREGATE_MAX_LENGTH);
 }
 
 function initUpdateAll() {

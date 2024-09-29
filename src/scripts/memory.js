@@ -109,8 +109,8 @@ function getAll(callback = () => { }) {
         if (!values["lang"]) values.lang = "en";
         if (!values["mode"]) values.mode = "easy";
         if (!values["type"]) values.type = "n";
-        if (!values["const"] === undefined) values.const = true;
-        if (!values["post"] === undefined) values.post = true;
+        if (values["const"] === undefined) values.const = true;
+        if (values["post"] === undefined) values.post = true;
         if (!values["instance"]) values.instance = "https://cpoi.softplus.fr/";
         localSettings = values;
         callback();

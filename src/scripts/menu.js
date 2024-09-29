@@ -3,13 +3,15 @@ const AGGREGATE_MAX_LENGTH = 60000;
 
 function urlEncode(input) {
     // let input = encodeHTMLEntities(rawInput);
-    return input.split('').map(c => {
-        if (/[a-zA-Z0-9\-_.~?]/.test(c)) {
-            return c;
-        } else {
-            return encodeURIComponent(c).toUpperCase();
-        }
-    }).join('');
+    if (localSettings.post == false)
+        return input.split('').map(c => {
+            if (/[a-zA-Z0-9\-_.~?]/.test(c)) {
+                return c;
+            } else {
+                return encodeURIComponent(c).toUpperCase();
+            }
+        }).join('');
+    else return input;
 }
 
 function decodeHTMLEntities(text) {
@@ -123,28 +125,72 @@ function getCodeFromCPOI(ret, mode, content, lang = 'en') {
     if (content == '' || content.length > INPUT_MAX_LENGTH) return setError("dataInput", `${localSettings.lang == "fr" ? "Longueur maximale : " : "Max length: "} ${INPUT_MAX_LENGTH} !`);
     lastStringRequest = content;
 
-    if (content.includes("%3Cscript")) {
-        if (INPUT_MAX_LENGTH == DEFAULT_MAX_LENGTH)
-            return setError("dataInputInfo", `${localSettings.lang == "fr" ? "Can't contain &lt;script&gt;" : "Ne peut pas contenir &lt;script&gt;"} !`);
-        else return recursiveSend(ret, chunkString(content, DEFAULT_MAX_LENGTH));
-    }
+    if (localSettings.post == false) {
+        if (content.includes("%3Cscript")) {
+            if (INPUT_MAX_LENGTH == DEFAULT_MAX_LENGTH)
+                return setError("dataInputInfo", `${localSettings.lang == "fr" ? "Ne peut pas contenir &lt;script&gt;. Utilisez POST ou Agrégeable." : "Can't contain &lt;script&gt;. Use POST or Aggregable."}`);
+            else return recursiveSend(ret, chunkString(content, DEFAULT_MAX_LENGTH));
+        }
 
-    if (content.length <= DEFAULT_MAX_LENGTH)
-        fetch(`${localSettings.instance}?l=${lang}&t=${localSettings.type}${localSettings.const ? "&m=const" : ""}&${mode}=${content}`)
+        if (content.length <= DEFAULT_MAX_LENGTH)
+            fetch(`${localSettings.instance}?l=${lang}&t=${localSettings.type}${localSettings.const ? "&m=const" : ""}&${mode}=${content}`)
+                .then(response => response.text())
+                .then(text => {
+                    updateAndClipboardCopy(ret, text.startsWith("\n") ? text.slice(1) : text, true);
+                });
+        else recursiveSend(ret, chunkString(content, DEFAULT_MAX_LENGTH));
+    }
+    else {
+        fetch(`${localSettings.instance}/index.php`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                'l': lang,
+                't': localSettings.type,
+                'c': content,
+                'm': `post;${localSettings.const ? "const" : ""}`
+            })
+        })
             .then(response => response.text())
             .then(text => {
-                updateAndClipboardCopy(ret, text.startsWith("\n") ? text.slice(1) : text, true);
-            });
-    else recursiveSend(ret, chunkString(content, DEFAULT_MAX_LENGTH));
+                // console.log(text);
+                if (regex.test(text.startsWith("\n") ? text.slice(1) : text))
+                    updateAndClipboardCopy(ret, text.startsWith("\n") ? text.slice(1) : text, true);
+                else
+                    updateAndClipboardCopy(ret, text.startsWith("\n") ? text.slice(1) : text);
+                document.getElementById("autoOutput").style.transform = "scale(1)";
+            })
+            .catch(error => console.error('Error:', error));
+    }
 }
 
 function getClipboardFromCPOI(ret, code) {
     if (code == '' || regex.test(code) == false) return setError("codeInputInfo", `"${code}" ${localSettings.lang == "fr" ? "ne ressemble pas à un code valide" : "doesn't look like a valid code"}`);
-    fetch(`${localSettings.instance}?p=${code}`)
-        .then(response => response.text())
-        .then(text => {
-            updateAndClipboardCopy(ret, text.startsWith("\n") ? text.slice(1) : text);
-        });
+    if (localSettings.post == false) {
+        fetch(`${localSettings.instance}?p=${code}`)
+            .then(response => response.text())
+            .then(text => {
+                updateAndClipboardCopy(ret, text.startsWith("\n") ? text.slice(1) : text);
+            });
+    } else {
+        fetch(`${localSettings.instance}/index.php`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                'p': code
+            })
+        })
+            .then(response => response.text())
+            .then(text => {
+                // console.log(response);
+                updateAndClipboardCopy(ret, text.startsWith("\n") ? text.slice(1) : text);
+            })
+            .catch(error => console.error('Error:', error));
+    }
 }
 
 
@@ -153,25 +199,50 @@ function getEasyFromCPOI(ret, content, lang = 'en') {
     if (content == '' || content.length > INPUT_MAX_LENGTH) return setError("autoInputInfo", `${localSettings.lang == "fr" ? "Longueur maximale : " : "Max length: "} ${INPUT_MAX_LENGTH} !`);
     lastStringRequest = content;
 
-    if (content.includes("%3Cscript")) {
-        if (INPUT_MAX_LENGTH == DEFAULT_MAX_LENGTH)
-            return setError("autoInputInfo", `${localSettings.lang == "fr" ? "Can't contain &lt;script&gt;" : "Ne peut pas contenir &lt;script&gt;"} !`);
-        else return recursiveSend(ret, chunkString(content, DEFAULT_MAX_LENGTH));
-    }
+    if (localSettings.post == false) {
+        if (content.includes("%3Cscript")) {
+            if (INPUT_MAX_LENGTH == DEFAULT_MAX_LENGTH)
+                return setError("autoInputInfo", `${localSettings.lang == "fr" ? "Ne peut pas contenir &lt;script&gt;. Utilisez POST ou Agrégeable." : "Can't contain &lt;script&gt;. Use POST or Aggregable."}`);
+            else return recursiveSend(ret, chunkString(content, DEFAULT_MAX_LENGTH));
+        }
 
-    console.log(`${localSettings.instance}?l=${lang}&t=${localSettings.type}&e=${content}`);
-    // console.log(`${localSettings.instance}?${lang}&e=${urlEncode(content)}`);
-    if (content.length <= DEFAULT_MAX_LENGTH)
-        fetch(`${localSettings.instance}?l=${lang}&t=${localSettings.type}&e=${content}`)
+        console.log(`${localSettings.instance}?l=${lang}&t=${localSettings.type}${localSettings.const ? "&m=const" : ""}&e=${content}`);
+        // console.log(`${localSettings.instance}?${lang}&e=${urlEncode(content)}`);
+        if (content.length <= DEFAULT_MAX_LENGTH)
+            fetch(`${localSettings.instance}?l=${lang}&t=${localSettings.type}&e=${content}`)
+                .then(response => response.text())
+                .then(text => {
+                    if (regex.test(text.startsWith("\n") ? text.slice(1) : text))
+                        updateAndClipboardCopy(ret, text.startsWith("\n") ? text.slice(1) : text, true);
+                    else
+                        updateAndClipboardCopy(ret, text.startsWith("\n") ? text.slice(1) : text);
+                    document.getElementById("autoOutput").style.transform = "scale(1)";
+                });
+        else recursiveSend(ret, chunkString(content, DEFAULT_MAX_LENGTH));
+    } else {
+        fetch(`${localSettings.instance}/index.php`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                'l': lang,
+                't': localSettings.type,
+                'e': content,
+                'm': `post;${localSettings.const ? "const" : ""}`
+            })
+        })
             .then(response => response.text())
             .then(text => {
+                // console.log(text);
                 if (regex.test(text.startsWith("\n") ? text.slice(1) : text))
                     updateAndClipboardCopy(ret, text.startsWith("\n") ? text.slice(1) : text, true);
                 else
                     updateAndClipboardCopy(ret, text.startsWith("\n") ? text.slice(1) : text);
                 document.getElementById("autoOutput").style.transform = "scale(1)";
-            });
-    else recursiveSend(ret, chunkString(content, DEFAULT_MAX_LENGTH));
+            })
+            .catch(error => console.error('Error:', error));
+    }
 }
 
 document.getElementById("autoOutput").style.transform = "scale(0)";
@@ -286,8 +357,8 @@ autoInput.addEventListener("keydown", function (e) {
 
     if (urlEncode(autoInput.value).length > INPUT_MAX_LENGTH)
         setError("autoInputInfo", `${localSettings.lang == "fr" ? "Longueur maximale : " : "Max length: "} ${INPUT_MAX_LENGTH} (${INPUT_MAX_LENGTH - urlEncode(autoInput.value).length})`);
-    else if (urlEncode(autoInput.value).includes("%3Cscript") && INPUT_MAX_LENGTH == DEFAULT_MAX_LENGTH)
-        setError("autoInputInfo", `${localSettings.lang == "fr" ? "Can't contain &lt;script&gt;" : "Ne peut pas contenir &lt;script&gt;"} !`);
+    else if (urlEncode(autoInput.value).includes("%3Cscript") && INPUT_MAX_LENGTH == DEFAULT_MAX_LENGTH && localSettings.post == false)
+        setError("autoInputInfo", `${localSettings.lang == "fr" ? "Ne peut pas contenir &lt;script&gt;. Utilisez POST ou Agrégeable." : "Can't contain &lt;script&gt;. Use POST or Aggregable."}`);
     else
         setError("autoInputInfo", "");
 });
@@ -309,8 +380,8 @@ dataInput.addEventListener("keydown", function (e) {
 
     if (urlEncode(dataInput.value).length > INPUT_MAX_LENGTH)
         setError("dataInputInfo", `${localSettings.lang == "fr" ? "Longueur maximale : " : "Max length: "} ${INPUT_MAX_LENGTH} (${INPUT_MAX_LENGTH - urlEncode(dataInput.value).length})`);
-    else if (urlEncode(dataInput.value).includes("%3Cscript") && INPUT_MAX_LENGTH == DEFAULT_MAX_LENGTH)
-        setError("autoInputInfo", `${localSettings.lang == "fr" ? "Can't contain &lt;script&gt;" : "Ne peut pas contenir &lt;script&gt;"} !`);
+    else if (urlEncode(dataInput.value).includes("%3Cscript") && INPUT_MAX_LENGTH == DEFAULT_MAX_LENGTH && localSettings.post == false)
+        setError("dataInputInfo", `${localSettings.lang == "fr" ? "Ne peut pas contenir &lt;script&gt;. Utilisez POST ou Agrégeable." : "Can't contain &lt;script&gt;. Use POST or Aggregable."}`);
     else
         setError("dataInputInfo", "");
 });
@@ -338,22 +409,39 @@ codeInput.addEventListener("keyup", function (e) {
 
 // POST ping
 
-function sendPing() {
+function sendPing(json = false) {
     setTempPopUp(true, `Waiting...`, "");
-    fetch(`${localSettings.instance}/index.php`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-            'ping': 'yes'
+    if (json)
+        // json requests not supported by server yet
+        fetch(`${localSettings.instance}/index.php`, {
+            method: 'POST',
+            body: JSON.stringify({ 'ping': 'yes' }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
         })
-    })
-        .then(response => response.text())
-        .then(data => {
-            // console.log(response);
-            console.log(data);
-            setTempPopUp(true, `POST`, data);
+            .then(response => response.text())
+            .then(data => {
+                // console.log(response);
+                console.log("JSON", data);
+                setTempPopUp(true, `POST`, data);
+            })
+            .catch(error => console.error('Error:', error));
+    else
+        fetch(`${localSettings.instance}/index.php`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: new URLSearchParams({
+                'ping': 'yes'
+            })
         })
-        .catch(error => console.error('Error:', error));
+            .then(response => response.text())
+            .then(data => {
+                // console.log(response);
+                console.log("URL", data);
+                setTempPopUp(true, `POST`, data);
+            })
+            .catch(error => console.error('Error:', error));
 }
