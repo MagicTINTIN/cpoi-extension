@@ -2,6 +2,7 @@
     "manifest_version": 3,
     "name": "CPOI",
     "version": "1.0",
+    "author":"MagicTINTIN",
     "icons": {
         "16": "images/icon16.png",
         "32": "images/icon32.png",
@@ -11,16 +12,13 @@
     "action": {
         "default_popup": "src/menu.html"
     },
-    "host_permissions": [
-        "*://*/*"
-    ],
     "permissions": [
         "storage"
     ],
     "browser_specific_settings": {
         "gecko": {
-            "id": "cpoi@example.org",
-            "strict_min_version": "88.0"
+            "id": "cpoi@softplus.fr",
+            "strict_min_version": "109.0"
         }
     },
     "commands": {
