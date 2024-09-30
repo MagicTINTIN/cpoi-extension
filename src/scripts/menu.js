@@ -34,17 +34,16 @@ let lastCode = "";
 let INPUT_MAX_LENGTH = 1800;
 
 function setError(idObj, message) {
-    document.getElementById(idObj).innerHTML = message;
+    document.getElementById(idObj).innerText = message;
 }
 
 const popUp = document.getElementById("infoTempPopUp")
 popUp.style.display = "none";
 function setTempPopUp(visible, title = "", content = "") {
     popUp.style.display = visible ? "flex" : "none";
-    popUp.innerHTML = `
-    <h2>${title}</h2>
-    <p>${content}</p>
-    `;
+    
+    document.getElementById("iTPUh2").innerText = title;
+    document.getElementById("iTPUp").innerText = content;
 }
 
 // function chunkString(str, length) {
@@ -83,10 +82,10 @@ function updateAndClipboardCopy(obj, rawValue, isCode = false) {
     lastCode = value;
     navigator.clipboard.writeText(value);
     if (isCode) {
-        document.getElementById("qrcode").innerHTML = "";
+        document.getElementById("qrcode").innerText = "";
         document.getElementById("qrGenButton").style.transform = "scale(1)";
         new QRCode(document.getElementById("qrcode"), `${localSettings.instance}?qr=1&p=${urlEncode(value)}`);
-        document.getElementById("qrValue").innerHTML = `${localSettings.instance}?qr=1&p=${urlEncode(value)}`;
+        document.getElementById("qrValue").innerText = `${localSettings.instance}?qr=1&p=${urlEncode(value)}`;
     }
 }
 
@@ -280,7 +279,7 @@ document.getElementById("displayTerms").addEventListener("click", showTerms)
 document.getElementById("iagreeButton").addEventListener("click", () => {
     set({ tou: true });
     document.getElementById("settings").style.display = "block"
-    document.getElementById("settings").innerHTML = "⚙";
+    document.getElementById("settings").innerText = "⚙";
     home();
     autoFocus();
 })
@@ -289,13 +288,13 @@ document.getElementById("iagreeButton").addEventListener("click", () => {
 let inSettings = false;
 document.getElementById("settings").addEventListener("click", () => {
     if (inSettings) {
-        document.getElementById("settings").innerHTML = "⚙";
+        document.getElementById("settings").innerText = "⚙";
         saveInstance();
         inSettings = false;
         home();
         autoFocus();
     } else {
-        document.getElementById("settings").innerHTML = "⨯";
+        document.getElementById("settings").innerText = "⨯";
         document.getElementById("qrIcon").src = "../images/qrcode.svg";
         inSettings = true;
         inQrcode = false;
@@ -313,7 +312,7 @@ document.getElementById("qrGenButton").addEventListener("click", () => {
         inQrcode = false;
         home();
     } else {
-        document.getElementById("settings").innerHTML = "⚙";
+        document.getElementById("settings").innerText = "⚙";
         document.getElementById("qrIcon").src = "../images/cross.svg";
         inQrcode = true;
         inSettings = false;
@@ -325,7 +324,7 @@ document.getElementById("qrGenButton").addEventListener("click", () => {
 });
 
 document.getElementById("saveSettings").addEventListener("click", () => {
-    document.getElementById("settings").innerHTML = "⚙";
+    document.getElementById("settings").innerText = "⚙";
     saveInstance();
     inSettings = false;
     home();

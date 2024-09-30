@@ -66,40 +66,40 @@ function updtTheme() {
 
 function updtLang() {
     // general interface
-    document.getElementById("lang").innerHTML = localSettings.lang == "fr" ? "FR" : "EN";
-    document.getElementById("cButton").innerHTML = localSettings.lang == "fr" ? "Copier" : "Copy";
-    document.getElementById("pButton").innerHTML = localSettings.lang == "fr" ? "Coller" : "Paste";
-    document.getElementById("aButton").innerHTML = localSettings.lang == "fr" ? "Copier/Coller" : "Copy/Paste";
+    document.getElementById("lang").innerText = localSettings.lang == "fr" ? "FR" : "EN";
+    document.getElementById("cButton").innerText = localSettings.lang == "fr" ? "Copier" : "Copy";
+    document.getElementById("pButton").innerText = localSettings.lang == "fr" ? "Coller" : "Paste";
+    document.getElementById("aButton").innerText = localSettings.lang == "fr" ? "Copier/Coller" : "Copy/Paste";
     // advanced
-    document.getElementById("settingPost").innerHTML = localSettings.lang == "fr" ? (localSettings.post ? "méthode POST" : "méthode GET") : (localSettings.post ? "POST method" : "GET method");
-    document.getElementById("settingConst").innerHTML = localSettings.lang == "fr" ? (localSettings.const ? "Inéditable" : "Agrégeable") : (localSettings.const ? "Uneditable" : "Aggregable");
+    document.getElementById("settingPost").innerText = localSettings.lang == "fr" ? (localSettings.post ? "méthode POST" : "méthode GET") : (localSettings.post ? "POST method" : "GET method");
+    document.getElementById("settingConst").innerText = localSettings.lang == "fr" ? (localSettings.const ? "Inéditable" : "Agrégeable") : (localSettings.const ? "Uneditable" : "Aggregable");
 
     // settings
-    document.getElementById("settingsH4").innerHTML = localSettings.lang == "fr" ? "Paramètres" : "Settings";
-    document.getElementById("themeTitle").innerHTML = localSettings.lang == "fr" ? "Thème" : "Theme";
-    document.getElementById("deleteTitle").innerHTML = localSettings.lang == "fr" ? "Supprimer après" : "Delete after";
-    document.getElementById("settingTheme").innerHTML = localSettings.lang == "fr" ? (localSettings.theme == "dark" ? "Sombre" : "Clair") : (localSettings.theme == "dark" ? "Dark" : "Light");
-    document.getElementById("displayTerms").innerHTML = localSettings.lang == "fr" ? "Conditions Générales d'Utilisation" : "Terms Of Use";
+    document.getElementById("settingsH4").innerText = localSettings.lang == "fr" ? "Paramètres" : "Settings";
+    document.getElementById("themeTitle").innerText = localSettings.lang == "fr" ? "Thème" : "Theme";
+    document.getElementById("deleteTitle").innerText = localSettings.lang == "fr" ? "Supprimer après" : "Delete after";
+    document.getElementById("settingTheme").innerText = localSettings.lang == "fr" ? (localSettings.theme == "dark" ? "Sombre" : "Clair") : (localSettings.theme == "dark" ? "Dark" : "Light");
+    document.getElementById("displayTerms").innerText = localSettings.lang == "fr" ? "Conditions Générales d'Utilisation" : "Terms Of Use";
 
     // mode
     if (localSettings.mode == "classic")
-        document.getElementById("settingMode").innerHTML = localSettings.lang == "fr" ? "Classique" : "Classic";
+        document.getElementById("settingMode").innerText = localSettings.lang == "fr" ? "Classique" : "Classic";
     else if (localSettings.mode == "advanced")
-        document.getElementById("settingMode").innerHTML = localSettings.lang == "fr" ? "Avancé" : "Advanced";
+        document.getElementById("settingMode").innerText = localSettings.lang == "fr" ? "Avancé" : "Advanced";
     else
-        document.getElementById("settingMode").innerHTML = localSettings.lang == "fr" ? "Simplifié" : "Simplified";
+        document.getElementById("settingMode").innerText = localSettings.lang == "fr" ? "Simplifié" : "Simplified";
 
     // type
     if (localSettings.type == "u")
-        document.getElementById("settingTimeDelete").innerHTML = (localSettings.lang == "fr" ? "Collage" : "Pasting") + "<br><span class='verysmall'>(30min max)</span>";
+        document.getElementById("settingTimeDelete").innerText = (localSettings.lang == "fr" ? "Collage" : "Pasting") + " (30min max)";
     else if (localSettings.type == "s")
-        document.getElementById("settingTimeDelete").innerHTML = "5min";
+        document.getElementById("settingTimeDelete").innerText = "5min";
     else if (localSettings.type == "l")
-        document.getElementById("settingTimeDelete").innerHTML = "12h";
+        document.getElementById("settingTimeDelete").innerText = "12h";
     else
-        document.getElementById("settingTimeDelete").innerHTML = "30min";
+        document.getElementById("settingTimeDelete").innerText = "30min";
 
-    document.getElementById("saveSettings").innerHTML = localSettings.lang == "fr" ? "Enregistrer" : "Save";
+    document.getElementById("saveSettings").innerText = localSettings.lang == "fr" ? "Enregistrer" : "Save";
 
     // inputs/outputs
     document.getElementById("autoInput").placeholder = localSettings.lang == "fr" ? "Entrez votre texte à copier ou votre code ici" : "Enter your text to copy or your code here";
@@ -110,7 +110,7 @@ function updtLang() {
     document.getElementById("settingInstance").value = localSettings.instance;
 
     // terms
-    document.getElementById("termsH4").innerHTML = localSettings.lang == "fr" ? "Conditions Générales d'Utilisation" : "Terms Of Use";
+    document.getElementById("termsH4").innerText = localSettings.lang == "fr" ? "Conditions Générales d'Utilisation" : "Terms Of Use";
     document.getElementById("byClickText").innerText = localSettings.lang == "fr" ? `En cliquant "J'accepte" ou en utilisant nos services, vous acceptez les CGU ci-dessus.` : `By clicking "I agree" or using our services, you agree to the TOU above.`
     if (localSettings.lang == "fr") {
         document.getElementById("frTerms").style.display = "block";
@@ -119,7 +119,7 @@ function updtLang() {
         document.getElementById("enTerms").style.display = "block";
         document.getElementById("frTerms").style.display = "none";
     }
-    document.getElementById("iagreeButton").innerHTML = localSettings.lang == "fr" ? "J'accepte" : "I agree";
+    document.getElementById("iagreeButton").innerText = localSettings.lang == "fr" ? "J'accepte" : "I agree";
 }
 
 document.getElementById("lang").addEventListener("click", switchLanguage)
