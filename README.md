@@ -5,13 +5,12 @@
 # What is it ?
 It's a tool to simply easily copy and paste over your devices.
 
-Not available for the moment.
-But soon...\
-<a href="https://addons.mozilla.org/"><img src="images/getFirefox.png" alt="Get uBlock Origin for Firefox"></a>
+Available on chromium-based web browsers!\
+<a href="https://chromewebstore.google.com/detail/cpoi/kdlpjmhiomfnlkgbeghbeocfafggcdof" target="_blank"><img src="images/getChrome.png" alt="Get CPOI for chromium"></a>
 
 # Develop & use it locally
 
-## FIrefox
+## Firefox
 ```
  about:debugging#/runtime/this-firefox
 ```
