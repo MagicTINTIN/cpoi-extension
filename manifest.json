@@ -18,6 +18,8 @@
     "permissions": [
         "storage"
     ],
+    "description": "CPOI is a browser extension that allows you to copy and paste text between your different devices.",
+    "homepage_url": "https://github.com/MagicTINTIN/cpoi",
     "browser_specific_settings": {
         "gecko": {
             "id": "cpoi@softplus.fr",
