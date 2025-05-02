@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "CPOI",
-    "version": "1.0.2",
+    "version": "1.1.0",
     "author": "MagicTINTIN",
     "icons": {
         "16": "images/icon16.png",
@@ -22,17 +22,6 @@
         "gecko": {
             "id": "cpoi@softplus.fr",
             "strict_min_version": "109.0"
-        }
-    },
-    "commands": {
-        "_execute_action": {
-            "suggested_key": {
-                "default": "Ctrl+Shift+V",
-                "windows": "Ctrl+Shift+V",
-                "mac": "Command+Shift+V",
-                "chromeos": "Ctrl+Shift+V",
-                "linux": "Ctrl+Shift+V"
-            }
         }
     }
 }
